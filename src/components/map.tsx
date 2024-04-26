@@ -29,13 +29,15 @@ export default function Map() {
 					return geographies.map((geo) => <Geography
 						key={geo.rsmKey}
 						geography={geo}
+						data-ente={geo.data}
+						data-countryname={geo.properties.name}
 						stroke="#555"
 						style={{
 							pressed: {
 								outline: "none",
 							},
 							default: {
-								fill: "none",
+								fill: "#fff",
 								outline: "none",
 							},
 							hover: {

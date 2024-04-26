@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: calc(500px - 40px);
-    height: calc(100vh - 40px);
+    height: 100vh;
     display: flex;
     padding: 20px;
     background-color: transparent;
@@ -12,6 +12,7 @@
 
 .selection__active {
     background-color: white;
+    border-right: 2px solid black;
     pointer-events: auto;
 }
 
@@ -28,6 +29,7 @@
 .selection__layers_container:focus-within  {
     outline: 2px solid black;
     overflow: hidden;
+    background-color: white;
 }
 
 .selection__search_bar {
@@ -50,6 +52,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 .selection__layers__button {
