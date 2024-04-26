@@ -7,10 +7,12 @@
     display: flex;
     padding: 20px;
     background-color: transparent;
+    pointer-events: none;
 }
 
 .selection__active {
     background-color: white;
+    pointer-events: auto;
 }
 
 .selection__layers_container {
@@ -20,6 +22,7 @@
     height: fit-content;
     border-radius: 12px;
     overflow: visible;
+    pointer-events: auto;
 }
 
 .selection__layers_container:focus-within  {
