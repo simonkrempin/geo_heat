@@ -51,6 +51,7 @@ export default function LayerSelection() {
 					{layersToDisplay.map(layer => {
 						return (
 							<button
+								key={`${layer}-button`}
 								className={styles.selection__layers__button}
 								onClick={() => {
 									setSelectedLayer(layer);
