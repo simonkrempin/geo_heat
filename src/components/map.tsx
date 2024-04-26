@@ -5,7 +5,6 @@ import {
 	ZoomableGroup,
 } from "react-simple-maps";
 import React, {
-	useEffect,
 	useState,
 } from "react";
 
