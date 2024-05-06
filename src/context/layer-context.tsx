@@ -6,27 +6,28 @@ import React, {
 } from "react";
 
 interface LayerContext {
-	selectedLayer: string | undefined;
-	setSelectedLayer: (layer: string | undefined) => void;
+	selectedLayer: string | null;
+	setSelectedLayer: (layer: string | null) => void;
 	allLayers: string[];
 }
 
 const LayerContextComp = createContext<LayerContext | undefined>(undefined);
 
 interface LayerContextProviderProps {
+	initialValue: string | null;
 	children: React.ReactNode;
 }
 
-export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ children }) => {
-	const [selectedLayer, setSelectedLayer] = React.useState<string | undefined>(undefined);
+export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ children , initialValue}) => {
+	const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
 	const router = useRouter();
 
 	const allLayers = ["layer1", "layer2", "layer3", "layer4", "layer5"];
 
-	const onSelectedLayerChange = (layer: string | undefined) => {
+	const onSelectedLayerChange = (layer: string | null) => {
 		setSelectedLayer(layer);
 
-		if (layer === undefined) {
+		if (!layer) {
 			router.push(`/`);
 			return;
 		}

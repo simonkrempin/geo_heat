@@ -2,8 +2,12 @@ import { useLayerContext } from "@/context/layer-context";
 import React, { useRef } from "react";
 import styles from "./layer-selection.module.css";
 
-export default function LayerSelection() {
-	const [search, setSearch] = React.useState<string>("");
+interface LayerSelectionProps {
+	initialValue: string | null;
+}
+
+const LayerSelection: React.FC<LayerSelectionProps> = ({ initialValue }) => {
+	const [search, setSearch] = React.useState<string>(initialValue ?? "");
 	const [searchSelected, setSearchSelected] = React.useState<boolean>(false);
 	const layersRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -23,7 +27,7 @@ export default function LayerSelection() {
 		: allLayers.filter((layer) => layer.includes(search.toLowerCase()));
 
 	return (
-		<aside className={`${styles.selection} ${selectedLayer !== undefined ? styles.selection__active : ""}`}>
+		<aside className={`${styles.selection} ${selectedLayer !== null ? styles.selection__active : ""}`}>
 			<div className={styles.selection__layers_container}>
 				<input
 					ref={inputRef}
@@ -32,7 +36,7 @@ export default function LayerSelection() {
 					onBlur={handleBlur}
 					onChange={(e) => {
 						setSearch(e.target.value);
-						setSelectedLayer(undefined);
+						setSelectedLayer(null);
 					}}
 					value={search}
 					onKeyDown={(event) => {
@@ -68,3 +72,5 @@ export default function LayerSelection() {
 		</aside>
 	);
 }
+
+export default LayerSelection;
