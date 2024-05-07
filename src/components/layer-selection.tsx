@@ -4,9 +4,10 @@ import styles from "./layer-selection.module.css";
 
 interface LayerSelectionProps {
 	initialValue: string | null;
+	children?: React.ReactNode;
 }
 
-const LayerSelection: React.FC<LayerSelectionProps> = ({ initialValue }) => {
+const LayerSelection: React.FC<LayerSelectionProps> = ({ initialValue, children }) => {
 	const [search, setSearch] = React.useState<string>(initialValue ?? "");
 	const [searchSelected, setSearchSelected] = React.useState<boolean>(false);
 	const layersRef = useRef<HTMLDivElement>(null);
@@ -68,6 +69,9 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ initialValue }) => {
 						);
 					})}
 				</div>}
+			</div>
+			<div className={styles.selection__body}>
+				{children}
 			</div>
 		</aside>
 	);

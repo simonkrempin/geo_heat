@@ -8,6 +8,7 @@ import { LayerContextProvider } from "@/context/layer-context";
 import LayerSelection from "@/components/layer-selection";
 import Map from "@/components/map";
 import Pointer from "@/components/pointer";
+import DataGrid from "@/components/data-grid";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -17,7 +18,9 @@ export default function Home() {
         <main className={styles.main}>
             <LayerContextProvider initialValue={initialLayer}>
                 <Pointer />
-                <LayerSelection initialValue={initialLayer} />
+                <LayerSelection initialValue={initialLayer}>
+                    <DataGrid />
+                </LayerSelection>
                 <Map />
             </LayerContextProvider>
         </main>

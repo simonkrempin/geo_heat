@@ -1,0 +1,16 @@
+.table {
+    width: 100%;
+    position: relative;
+    padding-top: 20px;
+}
+
+.table__entry {
+    color: black;
+}
+
+.table__header_item {
+    color: black;
+    font-weight: bold;
+    text-align: left;
+    font-size: 20px;
+}
