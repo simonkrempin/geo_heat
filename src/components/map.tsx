@@ -1,3 +1,5 @@
+import { useLayerContext } from "@/context/layer-context";
+import { getColorByValue } from "@/utils/color-by-value";
 import {
 	ComposableMap,
 	Geography,
@@ -11,6 +13,8 @@ import React, {
 const geoJSON: string = "/world-110m.json";
 
 export default function Map() {
+	const { layerInformation } = useLayerContext();
+
 	const [position, setPosition] = useState<Position>({
 		coordinates: [0, 0],
 		zoom: 1,
@@ -37,7 +41,7 @@ export default function Map() {
 								outline: "none",
 							},
 							default: {
-								fill: "#fff",
+								fill: getColorByValue(layerInformation, geo.properties.name),
 								outline: "none",
 							},
 							hover: {

@@ -1,3 +1,4 @@
+import { useLayerContext } from "@/context/layer-context";
 import { pointer } from "d3-selection";
 import React, {
 	useEffect,
@@ -10,6 +11,8 @@ interface PointerInfo {
 }
 
 export default function Pointer() {
+	const { layerInformation } = useLayerContext();
+
 	const [pointerInfo, setPointerInfo] = useState<PointerInfo | null>(null);
 
 	useEffect(() => {
@@ -36,7 +39,7 @@ export default function Pointer() {
 		};
 	}, []);
 
-	if (!pointerInfo) {
+	if (!pointerInfo || !pointerInfo.country) {
 		return;
 	}
 
@@ -53,7 +56,7 @@ export default function Pointer() {
 				pointerEvents: "none",
 			}}
 		>
-			{pointerInfo?.country}
+			{`${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()] ?? "No data"}`}
 		</div>
 	)
 }
