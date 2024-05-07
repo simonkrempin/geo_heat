@@ -1,6 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import {
+	useRouter,
+	useSearchParams,
+} from "next/navigation";
 import React, {
 	createContext,
 	useEffect,
@@ -17,11 +20,13 @@ interface LayerContext {
 const LayerContextComp = createContext<LayerContext | undefined>(undefined);
 
 interface LayerContextProviderProps {
-	initialValue: string | null;
 	children: React.ReactNode;
 }
 
-export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ children , initialValue}) => {
+export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ children }) => {
+	const searchParams = useSearchParams();
+	const initialValue = searchParams.get("layer");
+
 	const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
 	const [layerInformation, setLayerInformation] = useState<LayerInformation | undefined>(undefined);
 

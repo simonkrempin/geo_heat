@@ -1,19 +1,20 @@
 import { useLayerContext } from "@/context/layer-context";
+import { useSearchParams } from "next/navigation";
 import React, { useRef } from "react";
 import styles from "./layer-selection.module.css";
 
 interface LayerSelectionProps {
-	initialValue: string | null;
 	children?: React.ReactNode;
 }
 
-const LayerSelection: React.FC<LayerSelectionProps> = ({ initialValue, children }) => {
-	const [search, setSearch] = React.useState<string>(initialValue ?? "");
+const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
+	const searchParams = useSearchParams();
+	const { setSelectedLayer, allLayers, selectedLayer } = useLayerContext();
+
+	const [search, setSearch] = React.useState<string>(searchParams.get("layer") ?? "");
 	const [searchSelected, setSearchSelected] = React.useState<boolean>(false);
 	const layersRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
-
-	const { setSelectedLayer, allLayers, selectedLayer } = useLayerContext();
 
 	const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
 		if (layersRef.current?.contains(event.relatedTarget as Node)) {
