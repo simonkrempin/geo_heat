@@ -23,10 +23,10 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 
 		setSearchSelected(false);
 	};
-
+	
 	const layersToDisplay = search === ""
 		? allLayers
-		: allLayers.filter((layer) => layer.includes(search.toLowerCase()));
+		: allLayers.filter((layer) => layer.toLowerCase().includes(search.toLowerCase()));
 
 	return (
 		<aside className={`${styles.selection} ${selectedLayer !== null ? styles.selection__active : ""}`}>
@@ -50,26 +50,28 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 						}
 					}}
 				/>
-				{ searchSelected && <div
-					className={styles.selection__layers}
-					ref={layersRef}
-				>
-					{layersToDisplay.map(layer => {
-						return (
-							<button
-								key={`${layer}-button`}
-								className={styles.selection__layers__button}
-								onClick={() => {
-									setSelectedLayer(layer);
-									setSearchSelected(false);
-									setSearch(layer);
-								}}
-							>
-								{layer}
-							</button>
-						);
-					})}
-				</div>}
+				{ searchSelected && 
+					<div
+						className={styles.selection__layers}
+						ref={layersRef}
+					>
+						{layersToDisplay.map(layer => {
+							return (
+								<button
+									key={`${layer}-button`}
+									className={styles.selection__layers__button}
+									onClick={() => {
+										setSelectedLayer(layer);
+										setSearchSelected(false);
+										setSearch(layer);
+									}}
+								>
+									{layer}
+								</button>
+							);
+						})}
+					</div>
+				}
 			</div>
 			<div className={styles.selection__body}>
 				{children}
