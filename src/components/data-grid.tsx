@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import styles from "./data-grid.module.css";
-
 import { useLayerContext } from "@/context/layer-context";
+import { getColorByValue } from "@/utils/color-by-value";
 
 export default function DataGrid() {
 	const { layerInformation } = useLayerContext();
-
-	const [countryStyle, setCountryStyle] = useState("");
 
 	const selectCountry = (country: string) => {
 		const elements = document.getElementsByClassName("rsm-geography");
@@ -22,7 +20,6 @@ export default function DataGrid() {
 		}
 
 		if (countryElement) {
-			setCountryStyle(countryElement.style.fill);
 			countryElement.style.fill = "rgb(136, 136, 136)";
 		}
 	}
@@ -39,9 +36,9 @@ export default function DataGrid() {
 				break;
 			}
 		}
-
+		
 		if (countryElement) {
-			countryElement.style.fill = countryStyle;
+			countryElement.style.fill = getColorByValue(layerInformation, country);
 		}
 	}
 
