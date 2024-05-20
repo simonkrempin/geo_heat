@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./data-grid.module.css";
 
 import { useLayerContext } from "@/context/layer-context";
 
 export default function DataGrid() {
 	const { layerInformation } = useLayerContext();
+
+	const [countryStyle, setCountryStyle] = useState("");
+
+	const selectCountry = (country: string) => {
+		const elements = document.getElementsByClassName("rsm-geography");
+
+		let countryElement = null;
+		for (let i = 0; i < elements.length; i++) {
+			const element = elements[i] as HTMLElement;
+			const dataCountryName = element.getAttribute("data-countryname");
+			if (dataCountryName?.toLowerCase() === country.toLowerCase()) {
+				countryElement = element;
+				break;
+			}
+		}
+
+		if (countryElement) {
+			setCountryStyle(countryElement.style.fill);
+			countryElement.style.fill = "rgb(136, 136, 136)";
+		}
+	}
+
+	const deSelectCountry = (country: string) => {
+		const elements = document.getElementsByClassName("rsm-geography");
+
+		let countryElement = null;
+		for (let i = 0; i < elements.length; i++) {
+			const element = elements[i] as HTMLElement;
+			const dataCountryName = element.getAttribute("data-countryname");
+			if (dataCountryName?.toLowerCase() === country.toLowerCase()) {
+				countryElement = element;
+				break;
+			}
+		}
+
+		if (countryElement) {
+			countryElement.style.fill = countryStyle;
+		}
+	}
 
 	if (!layerInformation) {
 		return null;
@@ -20,9 +59,9 @@ export default function DataGrid() {
 			</thead>
 			<tbody>
 				{Object.entries(layerInformation.values).map(([country, value]) => (
-					<tr key={country}>
-						<td className={styles.table__entry}>{country}</td>
-						<td className={styles.table__entry}>{value} {layerInformation.metadata.unit}</td>
+					<tr className={styles.table__entry} key={country} onMouseLeave={() => deSelectCountry(country)} onMouseOver={() => selectCountry(country)}>
+						<td >{country}</td>
+						<td >{value} {layerInformation.metadata.unit}</td>
 					</tr>
 				))}
 			</tbody>

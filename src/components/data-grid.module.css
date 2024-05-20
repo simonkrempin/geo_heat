@@ -6,7 +6,12 @@
 
 .table__entry {
     color: black;
+} 
+
+.table__entry:hover {
+    background-color: grey;
 }
+
 
 .table__header_item {
     color: black;
