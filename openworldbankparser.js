@@ -1,24 +1,47 @@
 const csv_parser = require("csv-parse");
 const fs = require("fs");
+const extract_zip = require("extract-zip");
+const https = require("https");
+
 
 const arguments= {
     "--out": undefined,
-    "--csv": undefined,
+    "--url": undefined,
     "--unit": undefined,
     "-d": undefined,
+    "--help": undefined,
 };
 
 const argsThroughCmd = process.argv.slice(2);
 
 argsThroughCmd.forEach(arg => {
-    const argSplit = arg.split("=");
+    if (arg === "--help") {
+        arguments["--help"] = true;
+        return;
+    }
+
+    const argSplit = [
+        arg.substring(0, arg.indexOf('=')),
+        arg.substring(arg.indexOf('=') + 1),
+    ]
     arguments[argSplit[0]] = argSplit[1];
 });
 
-console.log(arguments);
+if (argsThroughCmd.length === 0 || arguments["--help"]) {
+    console.log("A small downloader and parser for worldbank.org. Downloaded files will be placed in ./public/");
+    console.log("");
+    console.log("Usage: node openworldbankparser.js [OPTIONS]");
+    console.log("");
+    console.log("Options:");
+    console.log("--out         The name of the output json file without file ending (required)");
+    console.log("--url         The csv download url from https://data.worldbank.org/indicator (required)");
+    console.log("--unit        The unit of the dataset (required)");
+    console.log("-d            A short description of the dataset (required)");
+    process.exit(1);
+}
 
-if (arguments["--csv"] === undefined) {
-    console.log("Please specify a csv file to parse using --csv=<path>");
+if (arguments["--url"] === undefined) {
+    console.log("Please specify a url using --url=<path>");
     process.exit(1);
 }
 
@@ -41,6 +64,8 @@ const outFile = `public/${arguments["--out"]}.json`;
 const metadata = {
     "details": arguments["-d"],
     "unit": arguments["--unit"],
+    "timeData": true,
+    "downloadUrl": arguments["--url"]
 };
 
 // cook islands gibt's nicht
@@ -87,35 +112,87 @@ const renamingMap = {
     "timor-leste": "timor leste"
 }
 
-const res = fs.readFileSync(arguments["--csv"], {encoding: 'utf-8'});
-csv_parser.parse(res, {
-    relaxQuotes: true,
-    from_line: 5,
-    columns: true
-}, (err, records) => {
-    if (err !== undefined) {
-        return;
-    }
 
-    const res = {
-        "__meta": metadata,
-    };
 
-    for (let i = 0; i < records.length; i++) {
-        const record = {};
-        const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5);
-        let country = records[i]["Country Name"].toLowerCase();
 
-        if (!!renamingMap[country]) {
-            country = renamingMap[country];
+
+const downloaded_zip = fs.createWriteStream(__dirname + "/tmp_" + Date.now().toString() + ".zip");
+https.get(arguments["--url"], (response) => {
+    response.pipe(downloaded_zip);
+
+    downloaded_zip.on("finish", async () => {
+        downloaded_zip.close();
+        console.log("Successfully downloaded " + arguments["--url"] + " to " + downloaded_zip.path);
+
+        const directory_name = Date.now().toString()
+        await extract_zip(downloaded_zip.path, {dir: __dirname + "/" + directory_name});
+        console.log("Successfully extracted " + downloaded_zip.path + " to " + directory_name);
+
+        const extracted_files = fs.readdirSync(__dirname + "/" + directory_name);
+        const data_file_name = extracted_files.filter(file => file.startsWith('API_'))[0];
+
+        console.log("Removing " + downloaded_zip.path + "...");
+        fs.unlinkSync(downloaded_zip.path);
+
+        parse_csv(__dirname + "/" + directory_name + "/" + data_file_name);
+        console.log("Successfully parsed " + __dirname + "/" + directory_name + "/" + data_file_name + " into " + outFile);
+
+        console.log("Removing directory " + __dirname + "/" + directory_name + "...");
+        fs.rmSync(__dirname + "/" + directory_name, { recursive: true, force: true });
+    })
+}).on("error", (e) => {
+    console.log(e)
+});
+
+
+
+function parse_csv(csv_path) {
+    const res = fs.readFileSync(csv_path, {encoding: 'utf-8'});
+    csv_parser.parse(res, {
+        relaxQuotes: true,
+        from_line: 5,
+        columns: true
+    }, (err, records) => {
+        if (err !== undefined) {
+            return;
         }
 
-        years.forEach(v => {
-            record[v] = Number(records[i][v]);
-        });
+        let lowest = 2024;
+        let highest = 0;
 
-        res[country] = record;
-    }
+        const res = {
+            "__meta": metadata,
+        };
 
-    fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
-});
+        for (let i = 0; i < records.length; i++) {
+            const record = {};
+            const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5);
+            let country = records[i]["Country Name"].toLowerCase();
+
+            if (!!renamingMap[country]) {
+                country = renamingMap[country];
+            }
+
+            years.forEach(v => {
+                const value = Number(records[i][v]);
+
+                if (value !== 0) {
+                    if (Number(v) < lowest) {
+                        lowest = Number(v);
+                    } else if (Number(v) > highest) {
+                        highest = Number(v);
+                    }
+                }
+
+                record[v] = Number(records[i][v]);
+            });
+
+            res[country] = record;
+        }
+
+        res["__meta"]["timeMin"] = lowest;
+        res["__meta"]["timeMax"] = highest;
+
+        fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
+    });
+}

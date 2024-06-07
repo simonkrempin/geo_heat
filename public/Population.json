@@ -1,7 +1,8 @@
 {
   "__meta": {
     "details": "The population in each country",
-    "unit": "people"
+    "unit": "people",
+    "timeData": true
   },
   "aruba": {
     "1960": 54608,
