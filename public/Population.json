@@ -2,7 +2,9 @@
   "__meta": {
     "details": "The population in each country",
     "unit": "people",
-    "timeData": true
+    "timeData": true,
+    "timeMin": 1960,
+    "timeMax": 2022
   },
   "aruba": {
     "1960": 54608,

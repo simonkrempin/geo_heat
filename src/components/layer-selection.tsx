@@ -35,7 +35,7 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 		? allLayers
 		: allLayers.filter((layer) => layer.toLowerCase().includes(search.toLowerCase()));
 
-	const timeLayerMetadata = (layerInformation?.metadata as TimeLayerMetadata).timeData
+	const timeLayerMetadata = (layerInformation?.metadata as TimeLayerMetadata)?.timeData
 		? layerInformation?.metadata as unknown as TimeLayerMetadata
 		: undefined;
 	const isTimeData = timeLayerMetadata !== undefined;
@@ -90,8 +90,8 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 				{!searchSelected && selectedLayer !== null && isTimeData && <div style={{ marginBottom: "10px" }}>
                     <input
                         type={"range"}
-                        min={0}
-                        max={100}
+                        min={timeLayerMetadata.timeMin}
+                        max={timeLayerMetadata.timeMax}
                         value={selectedYear}
                         onChange={(e) => setSelectedYear(Number(e.target.value))}
                         style={{ padding: "10px 0", width: "100%" }}

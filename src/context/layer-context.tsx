@@ -35,7 +35,15 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 
 	const router = useRouter();
 
-	const allLayers = ["Average Height", "layer1", "Consumption of beer per capita"];
+	const allLayers = [
+		"Average Height",
+		"Consumption of beer per capita",
+		"Access To Electricity",
+		"Forest Area",
+		"GDP Growth",
+		"GDP Per Capita",
+		"Population",
+	];
 
 	const onSelectedLayerChange = (layer: string | null) => {
 		setSelectedLayer(layer);

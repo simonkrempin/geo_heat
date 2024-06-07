@@ -2,7 +2,9 @@
   "__meta": {
     "details": "Access to electricity in percent of population",
     "unit": "%",
-    "timeData": true
+    "timeData": true,
+    "timeMin": 1991,
+    "timeMax": 2021
   },
   "aruba": {
     "1960": 0,
