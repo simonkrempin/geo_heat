@@ -9,11 +9,17 @@ const arguments= {
     "--url": undefined,
     "--unit": undefined,
     "-d": undefined,
+    "--help": undefined,
 };
 
 const argsThroughCmd = process.argv.slice(2);
 
 argsThroughCmd.forEach(arg => {
+    if (arg === "--help") {
+        arguments["--help"] = true;
+        return;
+    }
+
     const argSplit = [
         arg.substring(0, arg.indexOf('=')),
         arg.substring(arg.indexOf('=') + 1),
@@ -21,7 +27,18 @@ argsThroughCmd.forEach(arg => {
     arguments[argSplit[0]] = argSplit[1];
 });
 
-console.log(arguments);
+if (argsThroughCmd.length === 0 || arguments["--help"]) {
+    console.log("A small downloader and parser for worldbank.org. Downloaded files will be placed in ./public/");
+    console.log("");
+    console.log("Usage: node openworldbankparser.js [OPTIONS]");
+    console.log("");
+    console.log("Options:");
+    console.log("--out         The name of the output json file without file ending (required)");
+    console.log("--url         The csv download url from https://data.worldbank.org/indicator (required)");
+    console.log("--unit        The unit of the dataset (required)");
+    console.log("-d            A short description of the dataset (required)");
+    process.exit(1);
+}
 
 if (arguments["--url"] === undefined) {
     console.log("Please specify a url using --url=<path>");
@@ -116,7 +133,7 @@ https.get(arguments["--url"], (response) => {
 
         console.log("Removing " + downloaded_zip.path + "...");
         fs.unlinkSync(downloaded_zip.path);
-        
+
         parse_csv(__dirname + "/" + directory_name + "/" + data_file_name);
         console.log("Successfully parsed " + __dirname + "/" + directory_name + "/" + data_file_name + " into " + outFile);
 

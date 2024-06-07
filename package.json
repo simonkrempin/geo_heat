@@ -21,7 +21,6 @@
     "@types/react-simple-maps": "^3.0.4",
     "csv-parse": "^5.5.6",
     "extract-zip": "^2.0.1",
-    "nanoid": "^5.0.7",
     "typescript": "^5"
   }
 }
