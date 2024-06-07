@@ -80,6 +80,29 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 					max={100}
 					style={{ padding: "10px 0", marginBottom: "10px", width: "100%" }}
 				/>
+				{ searchSelected && 
+					<div
+						className={styles.selection__layers}
+						ref={layersRef}
+					>
+						{layersToDisplay.map((layer, index) => {
+							return (
+								<button
+									tabIndex={index}
+									key={`${layer}-button`}
+									className={styles.selection__layers__button}
+									onClick={() => {
+										setSelectedLayer(layer);
+										setSearchSelected(false);
+										setSearch(layer);
+									}}
+								>
+									{layer}
+								</button>
+							);
+						})}
+					</div>
+				}
 			</div>
 			<div className={styles.selection__body}>
 				{children}

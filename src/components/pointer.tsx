@@ -1,5 +1,4 @@
 import { useLayerContext } from "@/context/layer-context";
-import { pointer } from "d3-selection";
 import React, {
 	useEffect,
 	useState,
@@ -57,7 +56,11 @@ export default function Pointer() {
 				pointerEvents: "none",
 			}}
 		>
-			{`${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()] ?? "No data"}`}
-		</div>
+			{
+				layerInformation?.values[pointerInfo.country.toLowerCase()] !== null
+					? `${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()]} ${layerInformation?.metadata.unit}`
+					: `${pointerInfo.country}: No data`
+			}
+			</div>
 	)
 }
