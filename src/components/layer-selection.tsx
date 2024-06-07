@@ -55,9 +55,10 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 						className={styles.selection__layers}
 						ref={layersRef}
 					>
-						{layersToDisplay.map(layer => {
+						{layersToDisplay.map((layer, index) => {
 							return (
 								<button
+									tabIndex={index}
 									key={`${layer}-button`}
 									className={styles.selection__layers__button}
 									onClick={() => {
