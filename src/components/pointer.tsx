@@ -56,11 +56,11 @@ export default function Pointer() {
 				pointerEvents: "none",
 			}}
 		>
-			{layerInformation?.values[pointerInfo.country.toLowerCase()] !== null ?
-				`${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()]} ${layerInformation?.metadata.unit}`
-			: 
-				`${pointerInfo.country}: No data`
-			}		
+			{
+				layerInformation?.values[pointerInfo.country.toLowerCase()] !== null
+					? `${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()]} ${layerInformation?.metadata.unit}`
+					: `${pointerInfo.country}: No data`
+			}
 			</div>
 	)
 }
