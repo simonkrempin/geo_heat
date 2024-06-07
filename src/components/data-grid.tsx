@@ -51,7 +51,7 @@ export default function DataGrid() {
 			</tr>
 			</thead>
 			<tbody>
-			{Object.entries(layerInformation.values).map(([country, value]) => (
+			{Object.entries(layerInformation.values).filter(x => x[1] !== null).map(([country, value]) => (
 				<tr className={styles.table__entry} key={country} onMouseLeave={() => deSelectCountry(country)} onMouseOver={() => selectCountry(country)}>
 					<td >{country}</td>
 					<td >{value} {layerInformation.metadata.unit}</td>
