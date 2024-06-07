@@ -6,6 +6,9 @@ interface Position {
 interface LayerMetadata {
 	unit: string;
 	details: string;
+	timeData?: boolean;
+	timeMin?: number;
+	timeMax?: number;
 }
 
 interface LayerInformation {

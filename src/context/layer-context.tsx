@@ -15,6 +15,8 @@ interface LayerContext {
 	setSelectedLayer: (layer: string | null) => void;
 	allLayers: string[];
 	layerInformation?: LayerInformation;
+	selectedYear?: number;
+	setSelectedYear: (year: number | undefined) => void;
 }
 
 const LayerContextComp = createContext<LayerContext | undefined>(undefined);
@@ -28,6 +30,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 	const initialValue = searchParams.get("layer");
 
 	const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
+	const [selectedYear, setSelectedYear] = React.useState<number | undefined>(undefined);
 	const [layerInformation, setLayerInformation] = useState<LayerInformation | undefined>(undefined);
 
 	const router = useRouter();
@@ -73,6 +76,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 				maxValue: Math.max(...Object.values(data) as number[]),
 				minValue: Math.min(...Object.values(data) as number[]),
 			});
+			setSelectedYear(metadata.timeMax);
 		})();
 	}, [selectedLayer]);
 
@@ -83,6 +87,8 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 				setSelectedLayer: onSelectedLayerChange,
 				allLayers,
 				layerInformation,
+				selectedYear,
+				setSelectedYear,
 			}}
 		>
 			{children}

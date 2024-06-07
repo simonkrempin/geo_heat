@@ -9,7 +9,14 @@ interface LayerSelectionProps {
 
 const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 	const searchParams = useSearchParams();
-	const { setSelectedLayer, allLayers, selectedLayer } = useLayerContext();
+	const {
+		setSelectedLayer,
+		allLayers,
+		selectedLayer,
+		selectedYear,
+		setSelectedYear,
+		layerInformation,
+	} = useLayerContext();
 
 	const [search, setSearch] = React.useState<string>(searchParams.get("layer") ?? "");
 	const [searchSelected, setSearchSelected] = React.useState<boolean>(false);
@@ -27,6 +34,8 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 	const layersToDisplay = search === ""
 		? allLayers
 		: allLayers.filter((layer) => layer.toLowerCase().includes(search.toLowerCase()));
+
+	const isTimeData = true // layerInformation?.metadata?.timeData ?? false;
 
 	return (
 		<aside className={`${styles.selection} ${selectedLayer !== null ? styles.selection__active : ""}`}>
@@ -75,18 +84,27 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
                         </div>
 					}
 				</div>
-				<input
-					type={"range"}
-					min={0}
-					max={100}
-					style={{ padding: "10px 0", marginBottom: "10px", width: "100%" }}
-				/>
+				{!searchSelected && selectedLayer !== null && isTimeData && <div style={{ marginBottom: "10px" }}>
+                    <input
+                        type={"range"}
+                        min={0}
+                        max={100}
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(Number(e.target.value))}
+                        style={{ padding: "10px 0", width: "100%" }}
+                    />
+					<div style={{ display: "flex", justifyContent: "space-between", color: "black" }}>
+						<p>{layerInformation?.metadata?.timeMin ?? 0}</p>
+						<p>{selectedYear}</p>
+						<p>{layerInformation?.metadata?.timeMax ?? 100}</p>
+					</div>
+                </div>}
 			</div>
-			<div className={styles.selection__body}>
+			<div className={`${styles.selection__body} ${isTimeData ? styles.selection__body__slide_active : ""}`}>
 				{children}
 			</div>
 		</aside>
 	);
-}
+};
 
 export default LayerSelection;
