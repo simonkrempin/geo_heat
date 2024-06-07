@@ -18,15 +18,12 @@
 }
 
 .selection__layers_container {
-    width: calc(100% - 40px);
     display: flex;
     flex-direction: column;
     height: fit-content;
     border-radius: 12px;
     overflow: visible;
     pointer-events: auto;
-    position: absolute;
-    z-index: 100
 }
 
 .selection__layers_container:focus-within  {
@@ -73,7 +70,7 @@
 }
 
 .selection__body {
-    margin-top: 40px;
+    margin-top: 80px;
     display: flex;
     overflow: auto;
 }
