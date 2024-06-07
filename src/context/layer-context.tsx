@@ -14,7 +14,7 @@ interface LayerContext {
 	selectedLayer: string | null;
 	setSelectedLayer: (layer: string | null) => void;
 	allLayers: string[];
-	layerInformation?: LayerInformation;
+	layerInformation?: LayerInformation | TimeLayerInformation;
 	selectedYear?: number;
 	setSelectedYear: (year: number | undefined) => void;
 }
@@ -31,7 +31,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 
 	const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
 	const [selectedYear, setSelectedYear] = React.useState<number | undefined>(undefined);
-	const [layerInformation, setLayerInformation] = useState<LayerInformation | undefined>(undefined);
+	const [layerInformation, setLayerInformation] = useState<LayerInformation | TimeLayerInformation | undefined>(undefined);
 
 	const router = useRouter();
 
