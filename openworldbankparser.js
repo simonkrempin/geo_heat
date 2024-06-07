@@ -1,33 +1,54 @@
 const csv_parser = require("csv-parse");
 const fs = require("fs");
 
-
-
-
-
-
-
-
-let csv_path = "/Users/jbes/Downloads/API_SP.POP.TOTL_DS2_en_csv_v2_144171/API_SP.POP.TOTL_DS2_en_csv_v2_144171.csv";
-//let csv_path = "/Users/jbes/Downloads/API_EG.ELC.ACCS.ZS_DS2_en_csv_v2_82/API_EG.ELC.ACCS.ZS_DS2_en_csv_v2_82.csv";
-
-const out_file = "public/Population.json";
-const metadata = {
-    "details": "The population in each country",
-    "unit": "people"
+const arguments= {
+    "--out": undefined,
+    "--csv": undefined,
+    "--unit": undefined,
+    "-d": undefined,
 };
 
+const argsThroughCmd = process.argv.slice(2);
 
+argsThroughCmd.forEach(arg => {
+    const argSplit = arg.split("=");
+    arguments[argSplit[0]] = argSplit[1];
+});
 
+console.log(arguments);
 
+if (arguments["--csv"] === undefined) {
+    console.log("Please specify a csv file to parse using --csv=<path>");
+    process.exit(1);
+}
 
+if (arguments["--out"] === undefined) {
+    console.log("Please specify the name of the output file using --out=<filename>");
+    process.exit(1);
+}
+
+if (arguments["--unit"] === undefined) {
+    console.log("Please specify an unit using --unit=<unit>");
+    process.exit(1);
+}
+
+if (arguments["-d"] === undefined) {
+    console.log("Please specify description using -d=<description>");
+    process.exit(1);
+}
+
+const outFile = `public/${arguments["--out"]}.json`;
+const metadata = {
+    "details": arguments["-d"],
+    "unit": arguments["--unit"],
+};
 
 // cook islands gibt's nicht
 // niue auch nicht
 // tokelau auch nicht
 // palestine auch nicht
 // taiwan auch nicht
-const name_map = {
+const renamingMap = {
     "slovak republic": "slovakia",
     "bermuda": "bermuda (uk)",
     "french polynesia": "french polynesia (france)",
@@ -66,35 +87,35 @@ const name_map = {
     "timor-leste": "timor leste"
 }
 
-
-
-const res = fs.readFileSync(csv_path, {encoding: 'utf-8'});
+const res = fs.readFileSync(arguments["--csv"], {encoding: 'utf-8'});
 csv_parser.parse(res, {
     relaxQuotes: true,
     from_line: 5,
     columns: true
 }, (err, records) => {
-    if (err !== undefined) return;
+    if (err !== undefined) {
+        return;
+    }
 
-    let res = {
+    const res = {
         "__meta": metadata,
     };
 
     for (let i = 0; i < records.length; i++) {
-        let record = {}
-        const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5)
-        let country = records[i]["Country Name"].toLowerCase()
+        const record = {};
+        const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5);
+        let country = records[i]["Country Name"].toLowerCase();
 
-        if (Object.keys(name_map).includes(country)) {
-            country = name_map[country]
-        } 
-    
+        if (!!renamingMap[country]) {
+            country = renamingMap[country];
+        }
+
         years.forEach(v => {
-            record[v] = Number(records[i][v])
+            record[v] = Number(records[i][v]);
         });
-    
-        res[country] = record
+
+        res[country] = record;
     }
 
-    fs.writeFileSync(out_file, JSON.stringify(res, null, 2))
+    fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
 });
