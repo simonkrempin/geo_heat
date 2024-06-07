@@ -61,6 +61,6 @@ export default function Pointer() {
 					? `${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()]} ${layerInformation?.metadata.unit}`
 					: `${pointerInfo.country}: No data`
 			}
-			</div>
+		</div>
 	)
 }
