@@ -157,6 +157,9 @@ function parse_csv(csv_path) {
             return;
         }
 
+        let lowest = 2024;
+        let highest = 0;
+
         const res = {
             "__meta": metadata,
         };
@@ -171,11 +174,24 @@ function parse_csv(csv_path) {
             }
 
             years.forEach(v => {
+                const value = Number(records[i][v]);
+
+                if (value !== 0) {
+                    if (Number(v) < lowest) {
+                        lowest = Number(v);
+                    } else if (Number(v) > highest) {
+                        highest = Number(v);
+                    }
+                }
+
                 record[v] = Number(records[i][v]);
             });
 
             res[country] = record;
         }
+
+        res["__meta"]["timeMin"] = lowest;
+        res["__meta"]["timeMax"] = highest;
 
         fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
     });
