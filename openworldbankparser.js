@@ -4,27 +4,60 @@ const extract_zip = require("extract-zip");
 const https = require("https");
 
 
-
-const csv_download_url = "https://api.worldbank.org/v2/en/indicator/NY.GDP.PCAP.CD?downloadformat=csv"
-const out_file = "public/GDP Per Capita.json";
-const metadata = {
-    "details": "GPD per capita",
-    "unit": "$",
-    "timeData": true,
-    "downloadUrl": csv_download_url
+const arguments= {
+    "--out": undefined,
+    "--url": undefined,
+    "--unit": undefined,
+    "-d": undefined,
 };
 
 
+// const csv_download_url = "https://api.worldbank.org/v2/en/indicator/NY.GDP.PCAP.CD?downloadformat=csv"
+// const out_file = "public/GDP Per Capita.json";
 
+const argsThroughCmd = process.argv.slice(2);
 
+argsThroughCmd.forEach(arg => {
+    const argSplit = arg.split("=");
+    arguments[argSplit[0]] = argSplit[1];
+});
 
+console.log(arguments);
+
+if (arguments["--url"] === undefined) {
+    console.log("Please specify a csv file to parse using --csv=<path>");
+    process.exit(1);
+}
+
+if (arguments["--out"] === undefined) {
+    console.log("Please specify the name of the output file using --out=<filename>");
+    process.exit(1);
+}
+
+if (arguments["--unit"] === undefined) {
+    console.log("Please specify an unit using --unit=<unit>");
+    process.exit(1);
+}
+
+if (arguments["-d"] === undefined) {
+    console.log("Please specify description using -d=<description>");
+    process.exit(1);
+}
+
+const outFile = `public/${arguments["--out"]}.json`;
+const metadata = {
+    "details": arguments["-d"],
+    "unit": arguments["--unit"],
+    "timeData": true,
+    "downloadUrl": arguments["--url"]
+};
 
 // cook islands gibt's nicht
 // niue auch nicht
 // tokelau auch nicht
 // palestine auch nicht
 // taiwan auch nicht
-const name_map = {
+const renamingMap = {
     "slovak republic": "slovakia",
     "bermuda": "bermuda (uk)",
     "french polynesia": "french polynesia (france)",
@@ -68,12 +101,12 @@ const name_map = {
 
 
 const downloaded_zip = fs.createWriteStream(__dirname + "/tmp_" + Date.now().toString() + ".zip");
-https.get(csv_download_url, (response) => {
+https.get(arguments["--url"], (response) => {
     response.pipe(downloaded_zip);
 
     downloaded_zip.on("finish", async () => {
         downloaded_zip.close();
-        console.log("Successfully downloaded " + csv_download_url + " to " + downloaded_zip.path);
+        console.log("Successfully downloaded " + arguments["--url"] + " to " + downloaded_zip.path);
 
         const directory_name = Date.now().toString()
         await extract_zip(downloaded_zip.path, {dir: __dirname + "/" + directory_name});
@@ -97,12 +130,49 @@ https.get(csv_download_url, (response) => {
 
 
 
+function parse_csv(csv_path) {
+    const res = fs.readFileSync(csv_path, {encoding: 'utf-8'});
+    csv_parser.parse(res, {
+        relaxQuotes: true,
+        from_line: 5,
+        columns: true
+    }, (err, records) => {
+        if (err !== undefined) {
+            return;
+        }
+
+        const res = {
+            "__meta": metadata,
+        };
+
+        for (let i = 0; i < records.length; i++) {
+            const record = {};
+            const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5);
+            let country = records[i]["Country Name"].toLowerCase();
+
+            if (!!renamingMap[country]) {
+                country = renamingMap[country];
+            }
+
+            years.forEach(v => {
+                record[v] = Number(records[i][v]);
+            });
+
+            res[country] = record;
+        }
+
+        fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
+    });
+}
+
+
+
 
 
 //let csv_path = "/Users/jbes/Downloads/API_SP.POP.TOTL_DS2_en_csv_v2_144171/API_SP.POP.TOTL_DS2_en_csv_v2_144171.csv";
 //let csv_path = "/Users/jbes/Downloads/API_EG.ELC.ACCS.ZS_DS2_en_csv_v2_82/API_EG.ELC.ACCS.ZS_DS2_en_csv_v2_82.csv";
 
-function parse_csv(csv_path) {
+function _parse_csv(csv_path) {
     const res = fs.readFileSync(csv_path, {encoding: 'utf-8'});
     csv_parser.parse(res, {
         relaxQuotes: true,
