@@ -13,7 +13,7 @@
 
 .selection__active {
     background-color: white;
-    border-right: 2px solid black;
+    box-shadow: 0px 0px 10px 0 #00000042;
     pointer-events: auto;
 }
 
@@ -22,30 +22,36 @@
     display: flex;
     flex-direction: column;
     height: fit-content;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: visible;
     pointer-events: auto;
     position: absolute;
-    z-index: 100
+    z-index: 100;
 }
 
-.selection__layers_container:focus-within  {
-    outline: 2px solid black;
+.selection__layers_container:focus-within {
     overflow: hidden;
     background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+}
+
+.selection__layers_container:focus-within .selection__search_bar {
+    box-shadow: 0 0 2px rgb(0 0 0/20%),0 -1px 0 rgb(0 0 0/2%);
+    border-bottom: 1px solid #dadce0;
+    border-radius: 16px 16px 0 0;
 }
 
 .selection__search_bar {
     display: flex;
     flex-direction: column;
-    height: 40px;
+    height: 48px;
     border-radius: 30px;
     background-color: white;
     border: none;
-    outline: 2px solid black;
     color: black;
     padding: 0 20px;
     width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
 }
 
 .selection__search_bar:focus {
@@ -62,9 +68,10 @@
 
 .selection__layers__button {
     background-color: white;
-    height: 40px;
     color: black;
     border: none;
+    text-align: left;
+    padding: 15px 20px;
 }
 
 .selection__layers__button:hover {

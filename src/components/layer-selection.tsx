@@ -40,6 +40,7 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 						setSearch(e.target.value);
 						setSelectedLayer(null);
 					}}
+					placeholder={"Search for statistics"}
 					value={search}
 					onKeyDown={(event) => {
 						if (event.key === "Enter" && layersToDisplay.length > 0) {
