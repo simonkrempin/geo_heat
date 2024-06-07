@@ -44,7 +44,7 @@ export default function DataGrid() {
 
 	return (
 		<table className={styles.table}>
-			<thead>
+			<thead style={{ backgroundColor: "white", position: "sticky", top: 0 }}>
 			<tr>
 				<th className={styles.table__header_item}>Country</th>
 				<th className={styles.table__header_item}>Values</th>
