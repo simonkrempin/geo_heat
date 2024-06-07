@@ -4,7 +4,7 @@ import { useLayerContext } from "@/context/layer-context";
 import { getColorByValue } from "@/utils/color-by-value";
 
 export default function DataGrid() {
-	const { layerInformation } = useLayerContext();
+	const { layerInformation, selectedYear, getCountryValue } = useLayerContext();
 
 	const selectCountry = (country: string) => {
 		const countryElement = getCountryElement(country);
@@ -14,11 +14,11 @@ export default function DataGrid() {
 		}
 	}
 
-	const deSelectCountry = (country: string) => {
+	const deselectCountry = (country: string) => {
 		const countryElement = getCountryElement(country);
 
 		if (countryElement) {
-			countryElement.style.fill = getColorByValue(layerInformation, country);
+			countryElement.style.fill = getColorByValue(layerInformation, getCountryValue(country));
 		}
 	}
 
@@ -51,12 +51,23 @@ export default function DataGrid() {
 			</tr>
 			</thead>
 			<tbody>
-			{Object.entries(layerInformation.values).filter(x => x[1] !== null).map(([country, value]) => (
-				<tr className={styles.table__entry} key={country} onMouseLeave={() => deSelectCountry(country)} onMouseOver={() => selectCountry(country)}>
-					<td >{country}</td>
-					<td >{value} {layerInformation.metadata.unit}</td>
-				</tr>
-			))}
+			{Object.entries(layerInformation.values).filter(x => x[1] !== null).map(([country, value]) => {
+				if (selectedYear !== undefined) {
+					value = value[selectedYear];
+				}
+
+				return (
+					<tr
+						className={styles.table__entry}
+						key={country}
+						onMouseLeave={() => deselectCountry(country)}
+						onMouseOver={() => selectCountry(country)}
+					>
+						<td>{country}</td>
+						<td>{value} {layerInformation.metadata.unit}</td>
+					</tr>
+				);
+			})}
 			</tbody>
 		</table>
 	);

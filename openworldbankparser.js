@@ -157,8 +157,8 @@ function parse_csv(csv_path) {
             return;
         }
 
-        let lowest = 2024;
-        let highest = 0;
+        let firstYear = 2024;
+        let lastYear = 0;
 
         const res = {
             "__meta": metadata,
@@ -173,25 +173,25 @@ function parse_csv(csv_path) {
                 country = renamingMap[country];
             }
 
-            years.forEach(v => {
-                const value = Number(records[i][v]);
+            years.forEach(year => {
+                const valueForYear = Number(records[i][year]);
 
-                if (value !== 0) {
-                    if (Number(v) < lowest) {
-                        lowest = Number(v);
-                    } else if (Number(v) > highest) {
-                        highest = Number(v);
+                if (valueForYear !== 0) {
+                    if (Number(year) < firstYear) {
+                        firstYear = Number(year);
+                    } else if (Number(year) > lastYear) {
+                        lastYear = Number(year);
                     }
                 }
 
-                record[v] = Number(records[i][v]);
+                record[year] = Number(records[i][year]);
             });
 
             res[country] = record;
         }
 
-        res["__meta"]["timeMin"] = lowest;
-        res["__meta"]["timeMax"] = highest;
+        res["__meta"]["timeMin"] = firstYear;
+        res["__meta"]["timeMax"] = lastYear;
 
         fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
     });
