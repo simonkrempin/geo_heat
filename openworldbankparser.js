@@ -11,21 +11,20 @@ const arguments= {
     "-d": undefined,
 };
 
-
-// const csv_download_url = "https://api.worldbank.org/v2/en/indicator/NY.GDP.PCAP.CD?downloadformat=csv"
-// const out_file = "public/GDP Per Capita.json";
-
 const argsThroughCmd = process.argv.slice(2);
 
 argsThroughCmd.forEach(arg => {
-    const argSplit = arg.split("=");
+    const argSplit = [
+        arg.substring(0, arg.indexOf('=')),
+        arg.substring(arg.indexOf('=') + 1),
+    ]
     arguments[argSplit[0]] = argSplit[1];
 });
 
 console.log(arguments);
 
 if (arguments["--url"] === undefined) {
-    console.log("Please specify a csv file to parse using --csv=<path>");
+    console.log("Please specify a url using --url=<path>");
     process.exit(1);
 }
 
@@ -119,7 +118,7 @@ https.get(arguments["--url"], (response) => {
         fs.unlinkSync(downloaded_zip.path);
         
         parse_csv(__dirname + "/" + directory_name + "/" + data_file_name);
-        console.log("Successfully parsed " + __dirname + "/" + directory_name + "/" + data_file_name + " into " + out_file);
+        console.log("Successfully parsed " + __dirname + "/" + directory_name + "/" + data_file_name + " into " + outFile);
 
         console.log("Removing directory " + __dirname + "/" + directory_name + "...");
         fs.rmSync(__dirname + "/" + directory_name, { recursive: true, force: true });
@@ -162,45 +161,5 @@ function parse_csv(csv_path) {
         }
 
         fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
-    });
-}
-
-
-
-
-
-//let csv_path = "/Users/jbes/Downloads/API_SP.POP.TOTL_DS2_en_csv_v2_144171/API_SP.POP.TOTL_DS2_en_csv_v2_144171.csv";
-//let csv_path = "/Users/jbes/Downloads/API_EG.ELC.ACCS.ZS_DS2_en_csv_v2_82/API_EG.ELC.ACCS.ZS_DS2_en_csv_v2_82.csv";
-
-function _parse_csv(csv_path) {
-    const res = fs.readFileSync(csv_path, {encoding: 'utf-8'});
-    csv_parser.parse(res, {
-        relaxQuotes: true,
-        from_line: 5,
-        columns: true
-    }, (err, records) => {
-        if (err !== undefined) return;
-    
-        let res = {
-            "__meta": metadata,
-        };
-    
-        for (let i = 0; i < records.length; i++) {
-            let record = {}
-            const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5)
-            let country = records[i]["Country Name"].toLowerCase()
-    
-            if (Object.keys(name_map).includes(country)) {
-                country = name_map[country]
-            } 
-        
-            years.forEach(v => {
-                record[v] = Number(records[i][v])
-            });
-        
-            res[country] = record
-        }
-    
-        fs.writeFileSync(out_file, JSON.stringify(res, null, 2))
     });
 }
