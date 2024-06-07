@@ -32,7 +32,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 
 	const router = useRouter();
 
-	const allLayers = ["Average Height", "layer1"];
+	const allLayers = ["Average Height", "layer1", "Consumption of beer per capita"];
 
 	const onSelectedLayerChange = (layer: string | null) => {
 		setSelectedLayer(layer);
@@ -64,6 +64,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 
 			const metadata = data["__meta"];
 
+			// so only the values are in the object
 			delete data["__meta"];
 
 			setLayerInformation({

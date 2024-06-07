@@ -34,6 +34,7 @@ export default function Pointer() {
 
 		addEventListener("mousemove", onMouseMove);
 
+		// clean up; returns if component is unmounted.
 		return () => {
 			removeEventListener("mousemove", onMouseMove);
 		};
