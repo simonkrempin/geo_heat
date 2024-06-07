@@ -35,7 +35,7 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 		? allLayers
 		: allLayers.filter((layer) => layer.toLowerCase().includes(search.toLowerCase()));
 
-	const isTimeData = true // layerInformation?.metadata?.timeData ?? false;
+	const isTimeData = layerInformation?.metadata?.timeData ?? false;
 
 	return (
 		<aside className={`${styles.selection} ${selectedLayer !== null ? styles.selection__active : ""}`}>
@@ -94,9 +94,9 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
                         style={{ padding: "10px 0", width: "100%" }}
                     />
 					<div style={{ display: "flex", justifyContent: "space-between", color: "black" }}>
-						<p>{layerInformation?.metadata?.timeMin ?? 0}</p>
+						<p>{layerInformation?.metadata?.timeMin}</p>
 						<p>{selectedYear}</p>
-						<p>{layerInformation?.metadata?.timeMax ?? 100}</p>
+						<p>{layerInformation?.metadata?.timeMax}</p>
 					</div>
                 </div>}
 			</div>
