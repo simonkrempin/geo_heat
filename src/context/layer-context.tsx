@@ -18,6 +18,7 @@ interface LayerContext {
 	selectedYear?: number;
 	setSelectedYear: (year: number | undefined) => void;
 	getCountryValue: (country: string, year?: number) => number | undefined;
+	displayCountryValue: (country: string) => string;
 }
 
 const LayerContextComp = createContext<LayerContext | undefined>(undefined);
@@ -94,12 +95,26 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 			return undefined;
 		}
 
-		if (selectedYear === undefined) {
-			return Number((layerInformation as LayerInformation).values[country.toLowerCase()]?.toFixed(2));
+		const countryValue = layerInformation.values[country.toLowerCase()];
+
+		if (!countryValue) {
+			return undefined;
 		}
 
-		return Number((layerInformation as TimeLayerInformation).values[country.toLowerCase()]?.[selectedYear]?.toFixed(2));
+		return selectedYear === undefined
+			? countryValue as number
+			: (countryValue as Record<string, number>)[selectedYear];
 	}, [layerInformation, selectedYear]);
+
+	const displayCountryValue = React.useCallback((country: string): string => {
+		const value = getCountryValue(country);
+
+		if (value === undefined) {
+			return "No data";
+		}
+
+		return Number(value.toFixed(2).replace(/[.,]00$/, "")).toLocaleString();
+	}, [getCountryValue]);
 
 	return (
 		<LayerContextComp.Provider
@@ -111,6 +126,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 				selectedYear,
 				setSelectedYear,
 				getCountryValue,
+				displayCountryValue,
 			}}
 		>
 			{children}

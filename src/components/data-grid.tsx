@@ -4,7 +4,12 @@ import { useLayerContext } from "@/context/layer-context";
 import { getColorByValue } from "@/utils/color-by-value";
 
 export default function DataGrid() {
-	const { layerInformation, selectedYear, getCountryValue } = useLayerContext();
+	const {
+		layerInformation,
+		selectedYear,
+		getCountryValue,
+		displayCountryValue
+	} = useLayerContext();
 
 	const selectCountry = (country: string) => {
 		const countryElement = getCountryElement(country);
@@ -59,11 +64,7 @@ export default function DataGrid() {
 					}
 					return Number(b[1]) - Number(a[1]);
 				})
-				.map(([country, value]) => {
-					if (selectedYear !== undefined) {
-						value = value[selectedYear];
-					}
-
+				.map(([country]) => {
 					return (
 						<tr
 							className={styles.table__entry}
@@ -72,7 +73,7 @@ export default function DataGrid() {
 							onMouseOver={() => selectCountry(country)}
 						>
 							<td>{country}</td>
-							<td>{value.toFixed(2)} {layerInformation.metadata.unit}</td>
+							<td>{displayCountryValue(country)} {layerInformation.metadata.unit}</td>
 						</tr>
 					);
 				})}
