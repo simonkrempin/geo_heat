@@ -64,7 +64,7 @@ export default function DataGrid() {
 						onMouseOver={() => selectCountry(country)}
 					>
 						<td>{country}</td>
-						<td>{value} {layerInformation.metadata.unit}</td>
+						<td>{value.toFixed(2)} {layerInformation.metadata.unit}</td>
 					</tr>
 				);
 			})}
