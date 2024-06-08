@@ -101,11 +101,12 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+/* doesn't look good when the scrollbar is dark and the rest is light */
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
 
 svg {
   width: 100%;

@@ -23,9 +23,13 @@ Options:
   --url         The csv download url from https://data.worldbank.org/indicator (required)
   --unit        The unit of the dataset (required)
   -d            A short description of the dataset (required)
+  --update      The name of the json file that should be updated without file ending (must not be combined with other options)
 ```
 
-Example:
+Examples:
 ```
 node openworldbankparser.js --out="GDP Growth" --url="https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.KD.ZG?downloadformat=csv" --unit="%/year" -d="GDP growth per year in percent"
+```
+```
+node openworldbankparser.js --update="GDP Growth"
 ```

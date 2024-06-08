@@ -44,26 +44,39 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 		<aside className={`${styles.selection} ${selectedLayer !== null ? styles.selection__active : ""}`}>
 			<div style={{ width: "calc(100% - 40px)", position: "absolute", zIndex: 100 }}>
 				<div className={styles.selection__layers_container}>
-					<input
-						ref={inputRef}
-						className={styles.selection__search_bar}
-						onFocus={() => setSearchSelected(true)}
-						onBlur={handleBlur}
-						onChange={(e) => {
-							setSearch(e.target.value);
-							setSelectedLayer(null);
-						}}
-						placeholder={"Search for statistics"}
-						value={search}
-						onKeyDown={(event) => {
-							if (event.key === "Enter" && layersToDisplay.length > 0) {
-								setSelectedLayer(layersToDisplay[0]);
-								setSearchSelected(false);
-								setSearch(layersToDisplay[0]);
-								inputRef.current?.blur();
-							}
-						}}
-					/>
+					<div className={styles.selection__search_bar_container}>
+						<input
+							ref={inputRef}
+							className={styles.selection__search_bar}
+							onFocus={() => setSearchSelected(true)}
+							onBlur={handleBlur}
+							onChange={(e) => {
+								setSearch(e.target.value);
+								setSelectedLayer(null);
+							}}
+							placeholder={"Search for statistics"}
+							value={search}
+							onKeyDown={(event) => {
+								if (event.key === "Enter" && layersToDisplay.length > 0) {
+									setSelectedLayer(layersToDisplay[0]);
+									setSearchSelected(false);
+									setSearch(layersToDisplay[0]);
+									inputRef.current?.blur();
+								}
+							}}
+						/>
+						<img 
+							className={styles.selection__search_bar__xmark}
+							src="svg/xmark.svg" 
+							alt="X mark"
+							onClick={() => {
+								if (inputRef.current !== null) {
+									setSearch("");
+									setSelectedLayer(null);
+								}
+							}}
+						/>
+					</div>
 					{searchSelected &&
                         <div
                             className={styles.selection__layers}

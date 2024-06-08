@@ -2,12 +2,14 @@ const csv_parser = require("csv-parse");
 const fs = require("fs");
 const extract_zip = require("extract-zip");
 const https = require("https");
+const { exit } = require("process");
 
 
 const arguments= {
     "--out": undefined,
     "--url": undefined,
     "--unit": undefined,
+    "--update": undefined,
     "-d": undefined,
     "--help": undefined,
 };
@@ -40,25 +42,36 @@ if (argsThroughCmd.length === 0 || arguments["--help"]) {
     process.exit(1);
 }
 
-if (arguments["--url"] === undefined) {
-    console.log("Please specify a url using --url=<path>");
-    process.exit(1);
+if (arguments["--update"] === undefined) {
+    if (arguments["--url"] === undefined) {
+        console.log("Please specify a url using --url=<path>");
+        process.exit(1);
+    }
+    
+    if (arguments["--out"] === undefined) {
+        console.log("Please specify the name of the output file using --out=<filename>");
+        process.exit(1);
+    }
+    
+    if (arguments["--unit"] === undefined) {
+        console.log("Please specify an unit using --unit=<unit>");
+        process.exit(1);
+    }
+    
+    if (arguments["-d"] === undefined) {
+        console.log("Please specify description using -d=<description>");
+        process.exit(1);
+    }
+} else {
+    const raw_dataset = fs.readFileSync(`public/${arguments["--update"]}.json`);
+    const dataset = JSON.parse(raw_dataset);
+
+    arguments["--out"] = arguments["--update"];
+    arguments["--url"] = dataset["__meta"]["downloadUrl"];
+    arguments["--unit"] = dataset["__meta"]["unit"];
+    arguments["-d"] = dataset["__meta"]["details"];
 }
 
-if (arguments["--out"] === undefined) {
-    console.log("Please specify the name of the output file using --out=<filename>");
-    process.exit(1);
-}
-
-if (arguments["--unit"] === undefined) {
-    console.log("Please specify an unit using --unit=<unit>");
-    process.exit(1);
-}
-
-if (arguments["-d"] === undefined) {
-    console.log("Please specify description using -d=<description>");
-    process.exit(1);
-}
 
 const outFile = `public/${arguments["--out"]}.json`;
 const metadata = {
@@ -112,9 +125,56 @@ const renamingMap = {
     "timor-leste": "timor leste"
 }
 
-
-
-
+const removalList = [
+    "world",
+    "ida & ibrd total",
+    "low & middle income",
+    "middle income",
+    "ibrd only",
+    "early-demographic dividend",
+    "lower middle income",
+    "upper middle income",
+    "east asia & pacific",
+    "late-demographic dividend",
+    "east asia & pacific (excluding high income)",
+    "east asia & pacific (ida & ibrd countries)",
+    "south asia",
+    "south asia (ida & ibrd)",
+    "ida total",
+    "oecd members",
+    "high income",
+    "ida only",
+    "sub-saharan africa",
+    "sub-saharan africa (ida & ibrd countries)",
+    "sub-saharan africa (excluding high income)",
+    "least developed countries: un classification",
+    "post-demographic dividend",
+    "pre-demographic dividend",
+    "fragile and conflict affected situations",
+    "europe & central asia",
+    "heavily indebted poor countries (hipc)",
+    "africa eastern and southern",
+    "low income",
+    "latin america & caribbean",
+    "latin america & the caribbean (ida & ibrd countries)",
+    "ida blend",
+    "latin america & caribbean (excluding high income)",
+    "middle east & north africa",
+    "africa western and central",
+    "arab world",
+    "europe & central asia (ida & ibrd countries)",
+    "european union",
+    "middle east & north africa (excluding high income)",
+    "middle east & north africa (ida & ibrd countries)",
+    "europe & central asia (excluding high income)",
+    "euro area",
+    "central europe and the baltics",
+    "small states",
+    "other small states",
+    "caribbean small states",
+    "west bank and gaza",
+    "pacific island small states"
+];
 
 const downloaded_zip = fs.createWriteStream(__dirname + "/tmp_" + Date.now().toString() + ".zip");
 https.get(arguments["--url"], (response) => {
@@ -168,6 +228,8 @@ function parse_csv(csv_path) {
             const record = {};
             const years = Object.keys(records[i]).splice(0, Object.values(records[i]).length - 5);
             let country = records[i]["Country Name"].toLowerCase();
+
+            if (removalList.includes(country)) continue;
 
             if (!!renamingMap[country]) {
                 country = renamingMap[country];
