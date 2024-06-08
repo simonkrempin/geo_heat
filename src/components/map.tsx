@@ -60,7 +60,7 @@ export default function Map() {
 						style={{
 							pressed: {
 								outline: "none",
-								fill: getColorByValue(layerInformation, geo.properties.name),
+								fill: getColorByValue(layerInformation, getCountryValue(geo.properties.name)),
 							},
 							default: {
 								fill: getColorByValue(layerInformation, getCountryValue(geo.properties.name)),
@@ -68,7 +68,7 @@ export default function Map() {
 							},
 							hover: {
 								outline: "none",
-								fill: getColorByValue(layerInformation, geo.properties.name),
+								fill: getColorByValue(layerInformation, getCountryValue(geo.properties.name)),
 							},
 						}}
 					/>);

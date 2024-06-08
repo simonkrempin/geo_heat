@@ -78,7 +78,11 @@ const metadata = {
     "details": arguments["-d"],
     "unit": arguments["--unit"],
     "timeData": true,
-    "downloadUrl": arguments["--url"]
+    "downloadUrl": arguments["--url"],
+    "colors": {
+        "0": "rgb(255, 255, 255)",
+        "1": "rgb(255, 155, 0)"
+    }
 };
 
 // cook islands gibt's nicht

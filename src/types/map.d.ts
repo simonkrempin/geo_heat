@@ -6,6 +6,11 @@ interface Position {
 interface LayerMetadata {
 	unit: string;
 	details: string;
+	timeMin: number;
+	timeMax: number;
+	timeData: boolean;
+	downloadUrl: string;
+	colors: {[position: string]: string};
 }
 
 interface TimeLayerMetadata extends LayerMetadata {
