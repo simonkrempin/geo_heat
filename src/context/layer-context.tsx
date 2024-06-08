@@ -1,5 +1,6 @@
 "use client";
 
+import { getGradientFromMetadata } from "@/utils/color-by-value";
 import {
 	useRouter,
 	useSearchParams,
@@ -85,6 +86,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 				metadata: metadata,
 				maxValue: getBound(Math.max, data, metadata.timeData),
 				minValue: getBound(Math.min, data, metadata.timeData),
+				colorGradient: getGradientFromMetadata(metadata),
 			});
 			setSelectedYear(metadata.timeMax);
 		})();

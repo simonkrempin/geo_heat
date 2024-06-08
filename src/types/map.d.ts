@@ -24,6 +24,7 @@ interface LayerInformation {
 	metadata: LayerMetadata,
 	maxValue: number;
 	minValue: number;
+	colorGradient: tinygradient.Instance;
 }
 
 interface TimeLayerInformation {
@@ -31,4 +32,5 @@ interface TimeLayerInformation {
 	metadata: TimeLayerMetadata;
 	maxValue: number;
 	minValue: number;
+	colorGradient: tinygradient.Instance;
 }
