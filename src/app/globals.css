@@ -110,3 +110,8 @@ a {
 svg {
   width: 100%;
 }
+
+.rsm-geographies {
+  stroke-linejoin: bevel;
+  stroke-width: 0.2;
+}
