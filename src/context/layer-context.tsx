@@ -95,10 +95,10 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 		}
 
 		if (selectedYear === undefined) {
-			return Number((layerInformation as LayerInformation).values[country.toLowerCase()].toFixed(2));
+			return Number((layerInformation as LayerInformation).values[country.toLowerCase()]?.toFixed(2));
 		}
 
-		return Number((layerInformation as TimeLayerInformation).values[country.toLowerCase()]?.[selectedYear].toFixed(2));
+		return Number((layerInformation as TimeLayerInformation).values[country.toLowerCase()]?.[selectedYear]?.toFixed(2));
 	}, [layerInformation, selectedYear]);
 
 	return (
