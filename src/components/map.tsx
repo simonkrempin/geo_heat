@@ -20,15 +20,37 @@ export default function Map() {
 		zoom: 1,
 	});
 
+	const onClick = (e: any) => {
+		if (e.target === undefined) return;
+		const element = e.target;
+		const country_name = e.target.dataset["countryname"];
+
+		/*
+			on click function in case someone wants to do sth with it
+		*/
+	}
+
+	const setMoveCursor = () => {
+		document.getElementsByTagName("body")[0].style.cursor = "grab";
+	}
+
+	const resetCursor = () => {
+		document.getElementsByTagName("body")[0].style.cursor = "";
+	}
+
 	return <ComposableMap>
 		<ZoomableGroup
 			zoom={position.zoom}
 			center={position.coordinates}
 			minZoom={1}
 			maxZoom={4}
-			onMoveEnd={(position: Position) => setPosition(position)}
+			onMoveEnd={(position: Position) => {
+				setPosition(position); 
+				resetCursor();
+			}}
+			onMoveStart={setMoveCursor}
 		>
-			<Geographies geography={geoJSON}>
+			<Geographies geography={geoJSON} onClick={onClick}>
 				{({ geographies }) => {
 					return geographies.map((geo) => <Geography
 						key={geo.rsmKey}
@@ -38,6 +60,7 @@ export default function Map() {
 						style={{
 							pressed: {
 								outline: "none",
+								fill: getColorByValue(layerInformation, geo.properties.name),
 							},
 							default: {
 								fill: getColorByValue(layerInformation, getCountryValue(geo.properties.name)),
@@ -45,7 +68,7 @@ export default function Map() {
 							},
 							hover: {
 								outline: "none",
-								fill: "#888",
+								fill: getColorByValue(layerInformation, geo.properties.name),
 							},
 						}}
 					/>);
