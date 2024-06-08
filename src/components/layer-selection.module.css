@@ -32,27 +32,48 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
 }
 
-.selection__layers_container:focus-within .selection__search_bar {
+.selection__layers_container:focus-within .selection__search_bar_container {
     box-shadow: 0 0 2px rgb(0 0 0/20%),0 -1px 0 rgb(0 0 0/2%);
     border-bottom: 1px solid #dadce0;
     border-radius: 16px 16px 0 0;
 }
 
+.selection__search_bar_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 30px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+    height: 48px;
+}
+
 .selection__search_bar {
     display: flex;
     flex-direction: column;
-    height: 48px;
-    border-radius: 30px;
-    background-color: white;
+    height: 25px;
     border: none;
     color: black;
-    padding: 0 20px;
+    margin-left: 20px;
     width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+    background-color: white;
 }
 
 .selection__search_bar:focus {
     outline: none;
+}
+
+.selection__search_bar__xmark {
+    width: 36px;
+    margin-right: 10px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 100%;
+    transition: background-color 0.15s;
+}
+
+.selection__search_bar__xmark:hover {
+    background-color: rgba(0, 0, 0, 0.08);
 }
 
 .selection__layers {
