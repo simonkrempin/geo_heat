@@ -1,9 +1,11 @@
 {
   "__meta": {
     "details": "GDP growth per year in percent",
-    "unit": "%/year",
+    "unit": "%",
     "timeData": true,
-    "downloadUrl": "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.KD.ZG?downloadformat=csv"
+    "downloadUrl": "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.KD.ZG?downloadformat=csv",
+    "timeMin": 1987,
+    "timeMax": 2022
   },
   "aruba": {
     "1960": 0,

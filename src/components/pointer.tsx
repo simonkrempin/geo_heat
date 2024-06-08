@@ -10,7 +10,7 @@ interface PointerInfo {
 }
 
 export default function Pointer() {
-	const { layerInformation } = useLayerContext();
+	const { layerInformation, getCountryValue } = useLayerContext();
 
 	const [pointerInfo, setPointerInfo] = useState<PointerInfo | null>(null);
 
@@ -57,8 +57,8 @@ export default function Pointer() {
 			}}
 		>
 			{
-				!!layerInformation?.values[pointerInfo.country.toLowerCase()]
-					? `${pointerInfo.country}: ${layerInformation?.values[pointerInfo.country.toLowerCase()]} ${layerInformation?.metadata.unit}`
+				!!getCountryValue(pointerInfo.country)
+					? `${pointerInfo.country}: ${getCountryValue(pointerInfo.country)} ${layerInformation?.metadata.unit}`
 					: `${pointerInfo.country}${!layerInformation ? "" : ": No data"}`
 			}
 		</div>

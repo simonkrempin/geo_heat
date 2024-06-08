@@ -13,7 +13,7 @@ import React, {
 const geoJSON: string = "/world-110m.json";
 
 export default function Map() {
-	const { layerInformation } = useLayerContext();
+	const { layerInformation, getCountryValue } = useLayerContext();
 
 	const [position, setPosition] = useState<Position>({
 		coordinates: [0, 0],
@@ -55,7 +55,6 @@ export default function Map() {
 					return geographies.map((geo) => <Geography
 						key={geo.rsmKey}
 						geography={geo}
-						data-ente={geo.data}
 						data-countryname={geo.properties.name}
 						stroke="#555"
 						style={{
@@ -64,7 +63,7 @@ export default function Map() {
 								fill: getColorByValue(layerInformation, geo.properties.name),
 							},
 							default: {
-								fill: getColorByValue(layerInformation, geo.properties.name),
+								fill: getColorByValue(layerInformation, getCountryValue(geo.properties.name)),
 								outline: "none",
 							},
 							hover: {

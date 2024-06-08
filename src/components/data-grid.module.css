@@ -1,12 +1,11 @@
 .table {
     width: 100%;
     position: relative;
-    padding-top: 20px;
 }
 
 .table__entry {
     color: black;
-} 
+}
 
 .table__entry:hover {
     background-color: grey;
