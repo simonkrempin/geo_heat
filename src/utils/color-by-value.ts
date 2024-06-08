@@ -11,5 +11,5 @@ export const getColorByValue = (
 
 	const percentage = (lowerBound === 0 ? 1 : lowerBound) / (upperBound === 0 ? 1 : upperBound);
 
-	return `rgba(0,89,255,${percentage})`;
+	return `rgb(255, ${255 - percentage * 100}, ${255 - percentage * 255})`;
 };
