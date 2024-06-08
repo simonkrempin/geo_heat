@@ -10,7 +10,7 @@ interface PointerInfo {
 }
 
 export default function Pointer() {
-	const { displayCountryValue } = useLayerContext();
+	const { layerInformation, displayCountryValue } = useLayerContext();
 
 	const [pointerInfo, setPointerInfo] = useState<PointerInfo | null>(null);
 
@@ -56,7 +56,7 @@ export default function Pointer() {
 				pointerEvents: "none",
 			}}
 		>
-			{displayCountryValue(pointerInfo.country)}
+			{pointerInfo.country}{layerInformation ? ": " + displayCountryValue(pointerInfo.country) : "" }
 		</div>
 	)
 }
