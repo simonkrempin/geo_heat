@@ -42,7 +42,7 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 
 	return (
 		<aside className={`${styles.selection} ${selectedLayer !== null ? styles.selection__active : ""}`}>
-			<div style={{ width: "calc(100% - 40px)", position: "absolute", zIndex: 100, backgroundColor: "white" }}>
+			<div style={{ width: "calc(100% - 40px)", position: "absolute", zIndex: 100 }}>
 				<div className={styles.selection__layers_container}>
 					<input
 						ref={inputRef}
