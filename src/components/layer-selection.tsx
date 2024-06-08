@@ -108,14 +108,18 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
                         </div>
 					}
 				</div>
-				{!searchSelected && selectedLayer !== null && isTimeData && <div style={{ marginBottom: "10px" }}>
+				{!searchSelected && selectedLayer !== null && isTimeData && selectedYear !== undefined && <div style={{ marginBottom: "10px" }}>
                     <input
                         type={"range"}
                         min={timeLayerMetadata.timeMin}
                         max={timeLayerMetadata.timeMax}
                         value={selectedYear}
                         onChange={(e) => setSelectedYear(Number(e.target.value))}
-                        style={{ padding: "10px 0", width: "100%" }}
+                        style={{
+							padding: "10px 0",
+							width: "100%",
+							"--percent": (selectedYear - timeLayerMetadata.timeMin) / (timeLayerMetadata.timeMax - timeLayerMetadata.timeMin) * 100 + "%",
+						} as any}
                     />
                     <div style={{ display: "flex", justifyContent: "space-between", color: "black" }}>
                         <p>{timeLayerMetadata.timeMin}</p>

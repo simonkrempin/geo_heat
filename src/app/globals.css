@@ -116,3 +116,38 @@ svg {
   stroke-linejoin: bevel;
   stroke-width: 0.2;
 }
+
+input[type="range"] {
+  -webkit-appearance: none; /* Remove default styles */
+  appearance: none;
+  width: 100%;
+  margin: 16px 0; /* Spacing */
+}
+
+/* Filled Track (Active) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: #ff9900;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effects */
+  transform-origin: center;
+  transform: translateY(-6px) scale(1);
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  transform: translateY(-6px) scale(1.1);
+  box-shadow: 0 0 0 5px rgba(255, 153, 0, 0.24);
+}
+
+/* Touch Target for Mobile */
+input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px !important;
+  background: linear-gradient(to right, #ff9900 var(--percent), #ffd28c var(--percent), #ffd28c 100%);
+  border-radius: 2px;
+}
