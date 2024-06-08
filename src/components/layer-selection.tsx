@@ -65,17 +65,24 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 								}
 							}}
 						/>
-						<img 
-							className={styles.selection__search_bar__xmark}
-							src="svg/xmark.svg" 
-							alt="X mark"
-							onClick={() => {
-								if (inputRef.current !== null) {
-									setSearch("");
-									setSelectedLayer(null);
-								}
-							}}
-						/>
+						{search
+							? <img
+								className={styles.selection__search_bar__xmark}
+								src="svg/xmark.svg"
+								alt="X mark"
+								onClick={() => {
+									if (inputRef.current !== null) {
+										setSearch("");
+										setSelectedLayer(null);
+									}
+								}}
+							/>
+							: <img
+								className={styles.selection__search_bar__search_icon}
+								src="svg/search.svg"
+								alt="Search"
+							/>
+						}
 					</div>
 					{searchSelected &&
                         <div
@@ -101,20 +108,24 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
                         </div>
 					}
 				</div>
-				{!searchSelected && selectedLayer !== null && isTimeData && <div style={{ marginBottom: "10px" }}>
+				{!searchSelected && selectedLayer !== null && isTimeData && selectedYear !== undefined && <div style={{ marginBottom: "10px" }}>
                     <input
                         type={"range"}
                         min={timeLayerMetadata.timeMin}
                         max={timeLayerMetadata.timeMax}
                         value={selectedYear}
                         onChange={(e) => setSelectedYear(Number(e.target.value))}
-                        style={{ padding: "10px 0", width: "100%" }}
+                        style={{
+							padding: "10px 0",
+							width: "100%",
+							"--percent": (selectedYear - timeLayerMetadata.timeMin) / (timeLayerMetadata.timeMax - timeLayerMetadata.timeMin) * 100 + "%",
+						} as any}
                     />
-					<div style={{ display: "flex", justifyContent: "space-between", color: "black" }}>
-						<p>{timeLayerMetadata.timeMin}</p>
-						<p>{selectedYear}</p>
-						<p>{timeLayerMetadata.timeMax}</p>
-					</div>
+                    <div style={{ display: "flex", justifyContent: "space-between", color: "black" }}>
+                        <p>{timeLayerMetadata.timeMin}</p>
+                        <p>{selectedYear}</p>
+                        <p>{timeLayerMetadata.timeMax}</p>
+                    </div>
                 </div>}
 			</div>
 			<div className={`${styles.selection__body} ${isTimeData ? styles.selection__body__slide_active : ""}`}>
