@@ -101,6 +101,7 @@
     margin-top: 60px;
     display: flex;
     overflow: auto;
+    scrollbar-width: thin;
 }
 
 .selection__body__slide_active {
