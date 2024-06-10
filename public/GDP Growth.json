@@ -9,7 +9,9 @@
       "1": "rgb(255, 155, 0)"
     },
     "timeMin": 1961,
-    "timeMax": 2022
+    "timeMax": 2022,
+    "lowerQuantile": -7.9566061001623,
+    "upperQuantile": 13.900001094354
   },
   "aruba": {
     "1960": 0,

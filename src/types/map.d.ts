@@ -8,6 +8,8 @@ interface LayerMetadata {
 	details: string;
 	timeMin: number;
 	timeMax: number;
+	lowerQuantile: number;
+	upperQuantile: number;
 	timeData: boolean;
 	downloadUrl: string;
 	colors: {[position: string]: string};

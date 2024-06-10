@@ -224,6 +224,8 @@ function parse_csv(csv_path) {
         let firstYear = 2024;
         let lastYear = 0;
 
+        const allValues = [];
+
         const res = {
             "__meta": metadata,
         };
@@ -250,7 +252,8 @@ function parse_csv(csv_path) {
                     }
                 }
 
-                record[year] = Number(records[i][year]);
+                allValues.push(valueForYear);
+                record[year] = valueForYear;
             });
 
             res[country] = record;
@@ -258,6 +261,11 @@ function parse_csv(csv_path) {
 
         res["__meta"]["timeMin"] = firstYear;
         res["__meta"]["timeMax"] = lastYear;
+
+        allValues.sort((a, b) => a - b);
+        const percent = 0.02;
+        res["__meta"]["lowerQuantile"] = allValues[Math.round(allValues.length * percent)];
+        res["__meta"]["upperQuantile"] = allValues[Math.round(allValues.length * (1 - percent))];
 
         fs.writeFileSync(outFile, JSON.stringify(res, null, 2))
     });

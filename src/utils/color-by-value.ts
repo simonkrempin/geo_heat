@@ -1,7 +1,7 @@
 import tinygradient from "tinygradient";
 
-// this can absolutely be optimized by only calling this function once when loading the layer
-// but i don't know how to do that :(
+const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max)
+
 export const getGradientFromMetadata = (metadata: LayerMetadata) => {
 	if (metadata.colors === undefined) {
 		return tinygradient("#ffc8a1", "#ff7300");
@@ -25,8 +25,11 @@ export const getColorByValue = (
 		return "#fff";
 	}
 
-	let lowerBound = value - layerInformation.minValue;
-	let upperBound = layerInformation.maxValue - layerInformation.minValue;
+	const lowerQuantile = layerInformation.metadata.lowerQuantile;
+	const upperQuantile = layerInformation.metadata.upperQuantile;
+
+	let lowerBound = value - lowerQuantile;
+	let upperBound = upperQuantile - lowerQuantile;
 
 	// when lowerBound is below 0, the percentage goes negative,
 	// which doesn't work with .rgbAt()
@@ -35,7 +38,8 @@ export const getColorByValue = (
 		upperBound += Math.abs(lowerBound);
 	}
 
-	const percentage = (lowerBound === 0 ? 1 : lowerBound) / (upperBound === 0 ? 1 : upperBound);
+	let percentage = (lowerBound === 0 ? 1 : lowerBound) / (upperBound === 0 ? 1 : upperBound);
+	percentage = clamp(percentage, 0, 1);
 
 	return layerInformation.colorGradient.rgbAt(percentage) as any;
 };
