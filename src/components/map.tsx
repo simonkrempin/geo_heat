@@ -13,7 +13,7 @@ import React, {
 const geoJSON: string = "/world-110m.json";
 
 export default function Map() {
-	const { layerInformation, getCountryValue, setClickedCountry } = useLayerContext();
+	const { layerInformation, getCountryValue, setClickedCountry, selectedLayer } = useLayerContext();
 
 	const [position, setPosition] = useState<Position>({
 		coordinates: [0, 0],
@@ -21,6 +21,10 @@ export default function Map() {
 	});
 
 	const onClick = (clickedCountry: string) => {
+		if (selectedLayer === null) {
+			return;
+		}
+
 		setClickedCountry(clickedCountry.toLowerCase());
 	}
 
