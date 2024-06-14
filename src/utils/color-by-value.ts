@@ -25,8 +25,8 @@ export const getColorByValue = (
 		return "#fff";
 	}
 
-	const lowerQuantile = layerInformation.metadata.lowerQuantile;
-	const upperQuantile = layerInformation.metadata.upperQuantile;
+	const lowerQuantile = layerInformation.metadata.lowerQuantile ?? layerInformation.minValue;
+	const upperQuantile = layerInformation.metadata.upperQuantile ?? layerInformation.maxValue;
 
 	let lowerBound = value - lowerQuantile;
 	let upperBound = upperQuantile - lowerQuantile;
