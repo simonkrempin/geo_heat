@@ -11,6 +11,8 @@ import Map from "@/components/map";
 import Pointer from "@/components/pointer";
 import DataGrid from "@/components/data-grid";
 import LoadingBuffer from "@/components/loading-buffer";
+import {indicatorFetcher} from "@/api/indicatorFetcher";
+import {dataFetcher} from "@/api/dataFetcher";
 
 const poppins = Poppins({
 	weight: "400",
@@ -19,6 +21,17 @@ const poppins = Poppins({
 });
 
 export default function Home() {
+	React.useEffect(() => {
+		indicatorFetcher().then((dataSource) => {
+			if (!dataSource) {
+				return;
+			}
+
+			console.log(dataSource.Data);
+			console.log(dataSource.Data[0].id);
+			dataFetcher(dataSource.Data[0].id);
+		});
+	})
 	return (
 		<>
         	<style jsx global>
