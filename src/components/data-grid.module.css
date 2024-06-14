@@ -9,6 +9,7 @@
 
 .table__entry:hover {
     background-color: grey;
+    cursor: pointer;
 }
 
 

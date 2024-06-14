@@ -11,6 +11,7 @@ import Map from "@/components/map";
 import Pointer from "@/components/pointer";
 import DataGrid from "@/components/data-grid";
 import LoadingBuffer from "@/components/loading-buffer";
+import LineChart from "@/components/line-chart";
 
 const poppins = Poppins({
 	weight: "400",
@@ -36,6 +37,7 @@ export default function Home() {
 							<DataGrid />
 						</LayerSelection>
 						<Map />
+						<LineChart />
 					</LayerContextProvider>
 				</Suspense>
 			</main>

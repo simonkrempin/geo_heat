@@ -13,21 +13,15 @@ import React, {
 const geoJSON: string = "/world-110m.json";
 
 export default function Map() {
-	const { layerInformation, getCountryValue } = useLayerContext();
+	const { layerInformation, getCountryValue, setClickedCountry } = useLayerContext();
 
 	const [position, setPosition] = useState<Position>({
 		coordinates: [0, 0],
 		zoom: 1,
 	});
 
-	const onClick = (e: any) => {
-		if (e.target === undefined) return;
-		const element = e.target;
-		const country_name = e.target.dataset["countryname"];
-
-		/*
-			on click function in case someone wants to do sth with it
-		*/
+	const onClick = (clickedCountry: string) => {
+		setClickedCountry(clickedCountry.toLowerCase());
 	}
 
 	const setMoveCursor = () => {
@@ -45,18 +39,19 @@ export default function Map() {
 			minZoom={1}
 			maxZoom={4}
 			onMoveEnd={(position: Position) => {
-				setPosition(position); 
+				setPosition(position);
 				resetCursor();
 			}}
 			onMoveStart={setMoveCursor}
 		>
-			<Geographies geography={geoJSON} onClick={onClick}>
+			<Geographies geography={geoJSON}>
 				{({ geographies }) => {
 					return geographies.map((geo) => <Geography
 						key={geo.rsmKey}
 						geography={geo}
 						data-countryname={geo.properties.name}
 						stroke="#555"
+						onClick={() => onClick(geo.properties.name)}
 						style={{
 							pressed: {
 								outline: "none",
