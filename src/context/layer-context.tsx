@@ -111,7 +111,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 	const displayCountryValue = React.useCallback((country: string): string => {
 		const value = getCountryValue(country);
 
-		if (value === undefined || !layerInformation) {
+		if (value === null || value === undefined || !layerInformation) {
 			return "No data";
 		}
 

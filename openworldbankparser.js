@@ -47,17 +47,17 @@ if (arguments["--update"] === undefined) {
         console.log("Please specify a url using --url=<path>");
         process.exit(1);
     }
-    
+
     if (arguments["--out"] === undefined) {
         console.log("Please specify the name of the output file using --out=<filename>");
         process.exit(1);
     }
-    
+
     if (arguments["--unit"] === undefined) {
         console.log("Please specify an unit using --unit=<unit>");
         process.exit(1);
     }
-    
+
     if (arguments["-d"] === undefined) {
         console.log("Please specify description using -d=<description>");
         process.exit(1);
@@ -250,7 +250,7 @@ function parse_csv(csv_path) {
                     }
                 }
 
-                record[year] = Number(records[i][year]);
+                record[year] = records[i][year] !== "" ? Number(records[i][year]) : null;
             });
 
             res[country] = record;

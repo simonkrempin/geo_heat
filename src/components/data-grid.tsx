@@ -60,9 +60,10 @@ export default function DataGrid() {
 				.filter((x: [string, number]) => x[1] !== null)
 				.sort((a, b) => {
 					if (selectedYear !== undefined) {
-						return Number(b[1][selectedYear]) -Number(a[1][selectedYear]);
+						return compare(b[1][selectedYear], a[1][selectedYear]);
 					}
-					return Number(b[1]) - Number(a[1]);
+
+					return compare(b[1], a[1]);
 				})
 				.map(([country]) => {
 					return (
@@ -80,4 +81,16 @@ export default function DataGrid() {
 			</tbody>
 		</table>
 	);
+}
+
+function compare(a: unknown, b: unknown): number {
+	if (a === null) {
+		return -1;
+	}
+
+	if (b === null) {
+		return 1;
+	}
+
+	return Number(a) - Number(b);
 }
