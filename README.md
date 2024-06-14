@@ -1,6 +1,8 @@
 # GeoHeat
 This is a university project to illustrate various geographical information of the world.
 
+![image](https://github.com/simonkrempin/geo_heat/assets/64578396/d81595bd-a9b3-4439-8357-f169bd447854)
+
 ## How to use GeoHeat
 Visit the website [GeoHeat](https://geo-heat.vercel.app/)
 
