@@ -21,18 +21,6 @@ const poppins = Poppins({
 });
 
 export default function Home() {
-	React.useEffect(() => {
-		indicatorFetcher().then((dataSource) => {
-			if (!dataSource) {
-				return;
-			}
-
-            dataFetcher(dataSource.Data[0].id).then((data) => {
-                console.log(data);
-            });
-        });
-    }, []);
-
 	return (
 		<>
         	<style jsx global>
