@@ -27,11 +27,12 @@ export default function Home() {
 				return;
 			}
 
-			console.log(dataSource.Data);
-			console.log(dataSource.Data[0].id);
-			dataFetcher(dataSource.Data[0].id);
-		});
-	})
+            dataFetcher(dataSource.Data[0].id).then((data) => {
+                console.log(data);
+            });
+        });
+    }, []);
+
 	return (
 		<>
         	<style jsx global>
