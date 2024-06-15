@@ -8,7 +8,8 @@ export default function DataGrid() {
 		layerInformation,
 		selectedYear,
 		getCountryValue,
-		displayCountryValue
+		displayCountryValue,
+		setClickedCountry,
 	} = useLayerContext();
 
 	const selectCountry = (country: string) => {
@@ -72,6 +73,7 @@ export default function DataGrid() {
 							key={country}
 							onMouseLeave={() => deselectCountry(country)}
 							onMouseOver={() => selectCountry(country)}
+							onClick={() => setClickedCountry(country)}
 						>
 							<td>{country}</td>
 							<td>{displayCountryValue(country)}</td>

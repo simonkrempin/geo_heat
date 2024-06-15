@@ -20,6 +20,8 @@ interface LayerContext {
 	setSelectedYear: (year: number | undefined) => void;
 	getCountryValue: (country: string, year?: number) => number | undefined;
 	displayCountryValue: (country: string) => string;
+	clickedCountry?: string;
+	setClickedCountry: (country: string | undefined) => void;
 }
 
 const LayerContextComp = createContext<LayerContext | undefined>(undefined);
@@ -35,6 +37,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 	const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
 	const [selectedYear, setSelectedYear] = React.useState<number | undefined>(undefined);
 	const [layerInformation, setLayerInformation] = useState<LayerInformation | TimeLayerInformation | undefined>(undefined);
+	const [clickedCountry, setClickedCountry] = useState<string | undefined>(undefined);
 
 	const router = useRouter();
 
@@ -129,6 +132,8 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({ chil
 				setSelectedYear,
 				getCountryValue,
 				displayCountryValue,
+				clickedCountry,
+				setClickedCountry: (value: string | undefined) => setClickedCountry(value),
 			}}
 		>
 			{children}

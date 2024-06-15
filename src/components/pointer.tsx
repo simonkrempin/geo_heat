@@ -10,7 +10,7 @@ interface PointerInfo {
 }
 
 export default function Pointer() {
-	const { layerInformation, displayCountryValue } = useLayerContext();
+	const { layerInformation, displayCountryValue, setClickedCountry } = useLayerContext();
 
 	const [pointerInfo, setPointerInfo] = useState<PointerInfo | null>(null);
 
@@ -33,7 +33,6 @@ export default function Pointer() {
 
 		addEventListener("mousemove", onMouseMove);
 
-		// clean up; returns if component is unmounted.
 		return () => {
 			removeEventListener("mousemove", onMouseMove);
 		};
