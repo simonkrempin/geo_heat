@@ -97,7 +97,7 @@ export default function LineChart() {
 					datasets: [
 						{
 							label: layerInformation.metadata.details,
-							data: Object.values((layerInformation?.values[clickedCountry] as Record<string, number>)), // Data points for the line
+							data: Object.values(layerInformation?.values[clickedCountry] as Record<string, number>).filter(value => value!==0), // Data points for the line
 							fill: false,
 							borderColor: "rgb(243,165,63)", // Line color
 							tension: 0.1, // Smoothening of the line
