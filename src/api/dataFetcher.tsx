@@ -1,5 +1,8 @@
-export const dataFetcher = async (id: string) => {
-    return await getAllData(id, '1', null);
+import {openWorldBankJsonParser} from "@/api/openWorldBankJsonParser";
+
+export const dataFetcher = async (indicatorInformation: IndicatorInformation): Promise<TimeLayerInformation> => {
+    const data = await getAllData(indicatorInformation.id, '1', null);
+    return openWorldBankJsonParser(data, indicatorInformation);
 }
 
 const getAllData = async (id: string, page: string, fetchedData: DataInformation | null): Promise<DataInformation> => {
