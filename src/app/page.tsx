@@ -12,6 +12,7 @@ import Pointer from "@/components/pointer";
 import DataGrid from "@/components/data-grid";
 import LoadingBuffer from "@/components/loading-buffer";
 import LineChart from "@/components/line-chart";
+import ChartMeta from "@/components/chart-meta";
 
 const poppins = Poppins({
 	weight: "400",
