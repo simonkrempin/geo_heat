@@ -3,7 +3,7 @@
 import React, { Suspense } from "react";
 import styles from "./page.module.css";
 
-import { LayerContextProvider } from "@/context/layer-context";
+import { LayerContextProvider, useLayerContext } from "@/context/layer-context";
 import { Poppins } from "next/font/google";
 
 import LayerSelection from "@/components/layer-selection";
@@ -38,10 +38,40 @@ export default function Home() {
 							<DataGrid />
 						</LayerSelection>
 						<Map />
-						<LineChart />
+						<Statistics />
 					</LayerContextProvider>
 				</Suspense>
 			</main>
 		</>
 	);
+}
+
+function Statistics() {
+	const { clickedCountry, layerInformation } = useLayerContext();
+
+    if (!clickedCountry) {
+        return null;
+    }
+
+    if (!layerInformation || !layerInformation.metadata.timeData) {
+        return null;
+    }
+
+    if (!layerInformation.values[clickedCountry]) {
+        return null;
+    }
+
+	return (<div style={{
+ 		position: "fixed",
+		width: "100vw",
+		height: "100vh",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		// padding: "100px 500px",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+	}}>
+		<LineChart />
+		<ChartMeta />
+	</div>);
 }

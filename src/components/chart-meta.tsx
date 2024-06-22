@@ -23,6 +23,7 @@ ChartJS.register(
 );
 
 export default function ChartMeta() {
+    const [visibility, setVisibility] = React.useState(true);
     const { clickedCountry, setClickedCountry, layerInformation } = useLayerContext();
 
     if (!clickedCountry) {
@@ -37,13 +38,13 @@ export default function ChartMeta() {
         return null;
     }
 
-    const calculateStats = () => {  
+    const calculateStats = () => {
         const values = Object.entries(layerInformation?.values[clickedCountry] || {})
-        .filter(([year, value]) => value !== 0) 
-        .map(([year, value]) => {
-          return { year, value }; 
-        });
-    
+            .filter(([year, value]) => value !== 0)
+            .map(([year, value]) => {
+                return { year, value };
+            });
+
         const min = Math.min(...values.map(obj => obj.value));
         const minYear = values.find(obj => obj.value === min);
 
@@ -53,35 +54,29 @@ export default function ChartMeta() {
         const average = values.reduce((sum, { value }) => sum + value, 0) / values.length;
         const biggestDifference = Math.max(...values.map(value => Math.abs(value.value - min)));
         const differenceLastFirst = values[values.length - 1].value - values[0].value;
-        const span = values[0].year + " - " + values[values.length -1].year;
+        const span = values[0].year + " - " + values[values.length - 1].year;
         return { minYear, maxYear, average, biggestDifference, differenceLastFirst, span };
     };
 
     const { minYear, maxYear, average, biggestDifference, differenceLastFirst, span } = calculateStats();
 
     return <div
-        style={{
-            position: "fixed",
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "100px 500px",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-        }}
+      style={{
+        display: !visibility ? "none" : "",
+        marginLeft: "10px"
+      }}
     >
         <div
             style={{
                 position: "relative",
-                width: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",
                 backgroundColor: "white",
                 borderRadius: "16px",
-                padding: "24px",
+                //top right bottom left
+				padding: "100px 80px 100px 80px"
             }}
         >
             <div>
@@ -92,7 +87,7 @@ export default function ChartMeta() {
                     }}
                 >statistics</p>
                 <button
-                    onClick={() => setClickedCountry(undefined)}
+                    onClick={() => setVisibility(false)}
                     style={{
                         position: "absolute",
                         top: "8px",
@@ -137,12 +132,12 @@ export default function ChartMeta() {
                             <td>{average.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <td>Difference between last and first</td>
+                            <td>Difference between last and first value</td>
                             <td>{span}</td>
                             <td>{biggestDifference.toFixed(2)}</td>
                         </tr>
                         <tr>
-                            <td>Biggest difference </td>
+                            <td>Biggest difference</td>
                             <td></td>
                             <td>{differenceLastFirst.toFixed(2)}</td>
                         </tr>

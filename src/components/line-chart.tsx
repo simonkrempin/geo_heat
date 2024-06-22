@@ -38,30 +38,21 @@ export default function LineChart() {
 		return null;
 	}
 
-	return <div
-		style={{
-			position: "fixed",
-			width: "100vw",
-			height: "100vh",
-			display: "flex",
-			justifyContent: "center",
-			alignItems: "center",
-			padding: "100px 500px",
-			backgroundColor: "rgba(0, 0, 0, 0.5)",
-		}}
-	>
+	return (
 		<div
-			style={{
+ 			style={{
+				justifyContent: "center",
 				position: "relative",
-				width: "100%",
 				display: "flex",
 				alignItems: "center",
-				justifyContent: "center",
 				flexDirection: "column",
 				backgroundColor: "white",
 				borderRadius: "16px",
-				padding: "24px",
-			}}
+				width: "50vw",
+				height: "80vh",
+                //top right bottom left
+				// padding: "200px 150px 200px 150px"
+			}} 
 		>
 			<div>
 				<p
@@ -112,6 +103,5 @@ export default function LineChart() {
 					},
 				}}
 			/>
-		</div>
-	</div>;
+		</div>);
 }
