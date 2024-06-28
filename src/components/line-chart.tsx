@@ -69,9 +69,9 @@ export default function LineChart() {
 				backgroundColor: "white",
 				borderRadius: "16px",
 				width: "50vw",
-				height: "80vh",
+				height: "90vh",
 				//top right bottom left
-				// padding: "200px 150px 200px 150px"
+				padding: "10px 10px 10px 10px"
 			}}
 		>
 			<div>
@@ -127,7 +127,9 @@ export default function LineChart() {
 				style={{ color: "black" }}
 			>
 				<table>
-					<thead>
+					<thead
+						style={{ textAlign: "left"}}
+					>
 						<tr>
 							<th></th>
 							<th>Year</th>
@@ -136,7 +138,7 @@ export default function LineChart() {
 					</thead>
 					<tbody>
 						<tr>
-							<td>Max</td>
+							<td className="field">Max</td>
 							<td>{maxYear?.year}</td>
 							<td>{maxYear?.value.toFixed(2)}</td>
 						</tr>
@@ -151,7 +153,7 @@ export default function LineChart() {
 							<td>{average.toFixed(2)}</td>
 						</tr>
 						<tr>
-							<td>Difference between last and first value</td>
+							<td>Difference between <br /> last and first value</td>
 							<td>{span}</td>
 							<td>{differenceLastFirst.toFixed(2)}</td>
 						</tr>

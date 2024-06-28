@@ -121,3 +121,7 @@
     overflow: auto;
     scrollbar-width: thin;
 }
+
+.field {
+    margin-right: 10px;
+}
