@@ -40,6 +40,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({child
         useEffect(() => {
             indicatorFetcher().then((data) => {
                 if (data) {
+                    console.log(data?.IndicatorInformation);
                     setIndicators(data?.IndicatorInformation);
                 }
 

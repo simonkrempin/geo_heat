@@ -12,6 +12,8 @@ import Pointer from "@/components/pointer";
 import DataGrid from "@/components/data-grid";
 import LoadingBuffer from "@/components/loading-buffer";
 import LineChart from "@/components/line-chart";
+import algoliasearch from "algoliasearch";
+import {InstantSearch} from "react-instantsearch";
 
 const poppins = Poppins({
 	weight: "400",
@@ -20,6 +22,8 @@ const poppins = Poppins({
 });
 
 export default function Home() {
+	const searchClient = algoliasearch('VYV3Q7P27P', '97ef96c06aebf315de163b6d849aec92');
+
 	return (
 		<>
         	<style jsx global>
@@ -31,14 +35,17 @@ export default function Home() {
 			</style>
 			<main className={styles.main}>
 				<Suspense fallback={<LoadingBuffer />}>
-					<LayerContextProvider>
-						<Pointer />
-						<LayerSelection>
-							<DataGrid />
-						</LayerSelection>
-						<Map />
-						<Statistics />
-					</LayerContextProvider>
+					<InstantSearch searchClient={searchClient}
+								   indexName={"Indicators"}>
+						<LayerContextProvider>
+							<Pointer />
+							<LayerSelection>
+								<DataGrid />
+							</LayerSelection>
+							<Map />
+							<Statistics />
+						</LayerContextProvider>
+					</InstantSearch>
 				</Suspense>
 			</main>
 		</>
