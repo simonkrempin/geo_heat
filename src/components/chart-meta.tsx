@@ -40,10 +40,8 @@ export default function ChartMeta() {
 
     const calculateStats = () => {
         const values = Object.entries(layerInformation?.values[clickedCountry] || {})
-            .filter(([year, value]) => value !== 0)
-            .map(([year, value]) => {
-                return { year, value };
-            });
+            .filter(([year, value]) => value !== null)
+            .map(([year, value]) => ({ year, value }));
 
         const min = Math.min(...values.map(obj => obj.value));
         const minYear = values.find(obj => obj.value === min);
