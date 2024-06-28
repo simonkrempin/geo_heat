@@ -20,13 +20,32 @@ export const openWorldBankJsonParser = (dataInformation: DataInformation, indica
         }
     };
 
+    if (dataInformation.Data === undefined) {
+        return {
+            values: {},
+            metadata: {
+                ...metadata,
+                timeMin: 0,
+            },
+            maxValue: 0,
+            minValue: 0,
+            colorGradient: colorGradient,
+        };
+    }
+
     dataInformation.Data.forEach((countryData: CountryData) => {
         if (countryData) {
-            if (!values[countryData.country.value]) {
-                values[countryData.country.value] = {};
+            if (!countryData.country.value) {
+                return;
             }
 
-            values[countryData.country.value][countryData.date] = countryData.value;
+            const countryValue = countryData.country.value.toLowerCase();
+
+            if (!values[countryValue]) {
+                values[countryValue] = {};
+            }
+
+            values[countryValue][countryData.date] = countryData.value;
 
             if (countryData.value > maxValue) {
                 maxValue = countryData.value;
