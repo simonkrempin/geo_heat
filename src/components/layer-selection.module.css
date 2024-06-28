@@ -106,14 +106,18 @@
     cursor: pointer;
 }
 
+.selection__spacer_active {
+    height: 1px;
+    width: calc(100% + 20px);
+    background: #78787840;
+    margin-top: 140px;
+    margin-left: -20px;
+}
+
 .selection__body {
-    margin-top: 60px;
+    margin-top: 20px;
     padding-right: 20px;
     display: flex;
     overflow: auto;
     scrollbar-width: thin;
-}
-
-.selection__body__slide_active {
-    margin-top: 130px;
 }
