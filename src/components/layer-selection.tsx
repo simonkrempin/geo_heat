@@ -1,6 +1,9 @@
 import { useLayerContext } from "@/context/layer-context";
 import { useSearchParams } from "next/navigation";
-import React, { useRef } from "react";
+import React, {
+	useEffect,
+	useRef,
+} from "react";
 import styles from "./layer-selection.module.css";
 
 interface LayerSelectionProps {
@@ -20,8 +23,14 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 
 	const [search, setSearch] = React.useState<string>(searchParams.get("layer") ?? "");
 	const [searchSelected, setSearchSelected] = React.useState<boolean>(false);
+	const [layersToDisplay, setLayersToDisplay] = React.useState<{
+		href: string,
+		title: string,
+	}[]>([])
 	const layersRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	let throttle = useRef<any>();
 
 	const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
 		if (layersRef.current?.contains(event.relatedTarget as Node)) {
@@ -31,9 +40,43 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 		setSearchSelected(false);
 	};
 
-	const layersToDisplay = search === ""
-		? allLayers
-		: allLayers.filter((layer) => layer.toLowerCase().includes(search.toLowerCase()));
+	useEffect(() => {
+		if (throttle.current !== undefined) {
+			clearTimeout(throttle.current);
+		}
+
+		throttle.current = setTimeout(() => {
+			fetch(`https://${"VYV3Q7P27P"}-dsn.algolia.net/1/indexes/${"OPENWORLD_DATA"}/query`, {
+				method: 'POST',
+				body: JSON.stringify({
+					params: `query=${search}`
+				}),
+				mode: 'cors',
+				headers: new Headers({
+					'Accept': 'application/json',
+					'Content-Type': 'application/json; charset=UTF-8',
+					'X-Algolia-API-Key': "98aa5a2d8b053c2e8800ac5205d65544",
+					'X-Algolia-Application-Id': "VYV3Q7P27P"
+				})
+			})
+				.then(result => result.json())
+				.then(data => {
+					if (!data.hits) {
+						setLayersToDisplay([]);
+						return;
+					}
+
+					setLayersToDisplay(data.hits.map((item: any) => ({
+						id: item.href,
+						title: item.title
+					})));
+				});
+		}, 400);
+
+		return () => {
+			clearTimeout(throttle.current);
+		}
+	}, [search])
 
 	const timeLayerMetadata = (layerInformation?.metadata as TimeLayerMetadata)?.timeData
 		? layerInformation?.metadata as unknown as TimeLayerMetadata
@@ -65,6 +108,9 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 								}
 							}}
 						/>
+						{/*<SearchBox*/}
+						{/*	placeholder={"Search for statistics"}*/}
+						{/*/>*/}
 						{search
 							? <img
 								className={styles.selection__search_bar__xmark}
@@ -93,15 +139,15 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 								return (
 									<button
 										tabIndex={index}
-										key={`${layer}-button`}
+										key={`${layer.href}-button`}
 										className={styles.selection__layers__button}
 										onClick={() => {
-											setSelectedLayer(layer);
+											setSelectedLayer(layer.title);
 											setSearchSelected(false);
-											setSearch(layer);
+											setSearch(layer.href);
 										}}
 									>
-										{layer}
+										{layer.title}
 									</button>
 								);
 							})}

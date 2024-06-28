@@ -36,7 +36,7 @@ export default function Home() {
 			<main className={styles.main}>
 				<Suspense fallback={<LoadingBuffer />}>
 					<InstantSearch searchClient={searchClient}
-								   indexName={"Indicators"}>
+								   indexName={"OPENWORLD_DATA"}>
 						<LayerContextProvider>
 							<Pointer />
 							<LayerSelection>
