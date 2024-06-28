@@ -12,7 +12,6 @@ import Pointer from "@/components/pointer";
 import DataGrid from "@/components/data-grid";
 import LoadingBuffer from "@/components/loading-buffer";
 import LineChart from "@/components/line-chart";
-import ChartMeta from "@/components/chart-meta";
 
 const poppins = Poppins({
 	weight: "400",
@@ -72,6 +71,5 @@ function Statistics() {
 		backgroundColor: "rgba(0, 0, 0, 0.5)",
 	}}>
 		<LineChart />
-		<ChartMeta />
 	</div>);
 }

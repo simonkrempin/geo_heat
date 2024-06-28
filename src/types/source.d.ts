@@ -1,6 +1,6 @@
-interface Indicator {
+interface Indicators {
     MetaData: MetaData;
-    Data: Data[];
+    IndicatorInformation: IndicatorInformation[];
 }
 
 interface MetaData {
@@ -10,7 +10,7 @@ interface MetaData {
     total: string;
 }
 
-interface Data {
+interface IndicatorInformation {
     id: string;
     name: string;
     source: Source;
@@ -21,11 +21,6 @@ interface Data {
 }
 
 interface Source {
-    id: string;
-    value: string;
-}
-
-interface Topic {
     id: string;
     value: string;
 }

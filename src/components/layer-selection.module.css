@@ -89,6 +89,8 @@
     flex-direction: column;
     background-color: white;
     cursor: pointer;
+    max-height: 400px;
+    overflow: auto;
 }
 
 .selection__layers__button {
