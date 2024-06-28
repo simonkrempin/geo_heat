@@ -1,4 +1,13 @@
 import { useLayerContext } from "@/context/layer-context";
+import {
+	getCacheEntry,
+	setCacheEntry,
+} from "@/utils/cache";
+import {
+	ALGOLIA_API_KEY,
+	ALGOLIA_APPLICATION_ID,
+	OPENWORLD_DATA_INDEX,
+} from "@/utils/public-env";
 import { useSearchParams } from "next/navigation";
 import React, {
 	useEffect,
@@ -10,11 +19,13 @@ interface LayerSelectionProps {
 	children?: React.ReactNode;
 }
 
+const searchIcon = "svg/search.svg";
+const closeIcon = "svg/xmark.svg";
+
 const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 	const searchParams = useSearchParams();
 	const {
 		setSelectedLayer,
-		allLayers,
 		selectedLayer,
 		selectedYear,
 		setSelectedYear,
@@ -23,10 +34,7 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 
 	const [search, setSearch] = React.useState<string>(searchParams.get("layer") ?? "");
 	const [searchSelected, setSearchSelected] = React.useState<boolean>(false);
-	const [layersToDisplay, setLayersToDisplay] = React.useState<{
-		href: string,
-		title: string,
-	}[]>([])
+	const [layersToDisplay, setLayersToDisplay] = React.useState<Indicator[]>([])
 	const layersRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,8 +53,14 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 			clearTimeout(throttle.current);
 		}
 
+		const cacheValue = getCacheEntry<Indicator[]>(search);
+		if (cacheValue) {
+			setLayersToDisplay(cacheValue);
+			return;
+		}
+
 		throttle.current = setTimeout(() => {
-			fetch(`https://${"VYV3Q7P27P"}-dsn.algolia.net/1/indexes/${"OPENWORLD_DATA"}/query`, {
+			fetch(`https://${ALGOLIA_APPLICATION_ID}-dsn.algolia.net/1/indexes/${OPENWORLD_DATA_INDEX}/query`, {
 				method: 'POST',
 				body: JSON.stringify({
 					params: `query=${search}`
@@ -55,18 +69,19 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 				headers: new Headers({
 					'Accept': 'application/json',
 					'Content-Type': 'application/json; charset=UTF-8',
-					'X-Algolia-API-Key': "98aa5a2d8b053c2e8800ac5205d65544",
-					'X-Algolia-Application-Id': "VYV3Q7P27P"
+					'X-Algolia-API-Key': ALGOLIA_API_KEY,
+					'X-Algolia-Application-Id': ALGOLIA_APPLICATION_ID,
 				})
 			})
 				.then(result => result.json())
 				.then(data => {
+					setCacheEntry(search, data.hits);
 					if (!data.hits) {
 						setLayersToDisplay([]);
 						return;
 					}
 
-					setLayersToDisplay(data.hits.map((item: any) => ({
+					setLayersToDisplay(data.hits.map((item: any): Indicator => ({
 						id: item.href,
 						title: item.title
 					})));
@@ -101,20 +116,17 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 							value={search}
 							onKeyDown={(event) => {
 								if (event.key === "Enter" && layersToDisplay.length > 0) {
-									setSelectedLayer(layersToDisplay[0]);
+									setSelectedLayer(layersToDisplay[0].id);
 									setSearchSelected(false);
-									setSearch(layersToDisplay[0]);
+									setSearch(layersToDisplay[0].title);
 									inputRef.current?.blur();
 								}
 							}}
 						/>
-						{/*<SearchBox*/}
-						{/*	placeholder={"Search for statistics"}*/}
-						{/*/>*/}
 						{search
 							? <img
 								className={styles.selection__search_bar__xmark}
-								src="svg/xmark.svg"
+								src={closeIcon}
 								alt="X mark"
 								onClick={() => {
 									if (inputRef.current !== null) {
@@ -125,7 +137,7 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 							/>
 							: <img
 								className={styles.selection__search_bar__search_icon}
-								src="svg/search.svg"
+								src={searchIcon}
 								alt="Search"
 							/>
 						}
@@ -139,12 +151,12 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
 								return (
 									<button
 										tabIndex={index}
-										key={`${layer.href}-button`}
+										key={`${layer.id}-button`}
 										className={styles.selection__layers__button}
 										onClick={() => {
 											setSelectedLayer(layer.title);
 											setSearchSelected(false);
-											setSearch(layer.href);
+											setSearch(layer.id);
 										}}
 									>
 										{layer.title}

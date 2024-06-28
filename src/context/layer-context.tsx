@@ -32,26 +32,13 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({searc
         const searchParams = useSearchParams();
         const initialValue = searchParams.get("layer");
 
-        const [selectedLayer, setSelectedLayer] = React.useState<string | null>(null);
+        const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
         const [selectedYear, setSelectedYear] = React.useState<number | undefined>(undefined);
         const [layerInformation, setLayerInformation] = useState<LayerInformation | TimeLayerInformation | undefined>(undefined);
         const [clickedCountry, setClickedCountry] = useState<string | undefined>(undefined);
 
         const router = useRouter();
         const [allIndicators, setIndicators] = useState<IndicatorInformation[]>([]);
-
-        useEffect(() => {
-            indicatorFetcher().then((data) => {
-                if (data) {
-                    console.log(data?.IndicatorInformation);
-                    setIndicators(data?.IndicatorInformation);
-                }
-
-                if (initialValue) {
-                    onSelectedLayerChange(initialValue);
-                }
-            });
-        }, []);
 
         const allLayers = allIndicators.map((indicator) => indicator.name);
 
@@ -76,8 +63,8 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({searc
                 return;
             }
 
-            const selectedIndicator = allIndicators.find((indicator) => indicator.name === selectedLayer) ?? null;
-            if (selectedIndicator === null) {
+            const selectedIndicator = allIndicators.find((indicator) => indicator.name === selectedLayer);
+            if (selectedIndicator === undefined) {
                 setLayerInformation(undefined);
                 return;
             }

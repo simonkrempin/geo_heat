@@ -40,3 +40,8 @@ interface Country {
     id: string;
     value: string;
 }
+
+interface Indicator {
+    id: string;
+    title: string;
+}
