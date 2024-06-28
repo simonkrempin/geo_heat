@@ -1,17 +1,35 @@
 .table {
     width: 100%;
     position: relative;
+    border-collapse: collapse;
+}
+
+.table__tbody {
+    cursor: pointer;
 }
 
 .table__entry {
     color: black;
+    transition: background-color 0.1s;
+}
+
+.table__entry > td {
+    padding: 5px 0;
+}
+
+.table__entry > td:first-child {
+    border-radius: 5px 0 0 5px;
+    padding-left: 5px;
+}
+.table__entry > td:last-child {
+    border-radius: 0 5px 5px 0;
+    padding-right: 5px;
 }
 
 .table__entry:hover {
-    background-color: grey;
+    background-color: #e7e7e775;
     cursor: pointer;
 }
-
 
 .table__header_item {
     color: black;

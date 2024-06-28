@@ -56,7 +56,7 @@ export default function DataGrid() {
 				<th className={styles.table__header_item}>Values</th>
 			</tr>
 			</thead>
-			<tbody>
+			<tbody className={styles.table__tbody}>
 			{Object.entries(layerInformation.values)
 				.filter((x: [string, number]) => x[1] !== null)
 				.sort((a, b) => {
@@ -75,7 +75,7 @@ export default function DataGrid() {
 							onMouseOver={() => selectCountry(country)}
 							onClick={() => setClickedCountry(country)}
 						>
-							<td>{country}</td>
+							<td >{country}</td>
 							<td>{displayCountryValue(country)}</td>
 						</tr>
 					);
