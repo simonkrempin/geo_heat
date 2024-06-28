@@ -128,6 +128,8 @@ const LayerSelection: React.FC<LayerSelectionProps> = ({ children }) => {
                     </div>
                 </div>}
 			</div>
+			<div className={isTimeData ? styles.selection__spacer_active : styles.selection__spacer}>	
+			</div>
 			<div className={`${styles.selection__body} ${isTimeData ? styles.selection__body__slide_active : ""}`}>
 				{children}
 			</div>
