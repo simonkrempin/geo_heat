@@ -5,8 +5,10 @@ import {useRouter, useSearchParams,} from "next/navigation";
 import React, {createContext, useEffect, useState,} from "react";
 import {indicatorFetcher} from "@/api/indicatorFetcher";
 import {dataFetcher} from "@/api/dataFetcher";
+import {SearchClient} from "algoliasearch";
 
 interface LayerContext {
+    searchClient: SearchClient,
     selectedLayer: string | null;
     setSelectedLayer: (layer: string | null) => void;
     allLayers: string[];
@@ -22,10 +24,11 @@ interface LayerContext {
 const LayerContextComp = createContext<LayerContext | undefined>(undefined);
 
 interface LayerContextProviderProps {
+    searchClient: SearchClient;
     children: React.ReactNode;
 }
 
-export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({children}) => {
+export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({searchClient, children}) => {
         const searchParams = useSearchParams();
         const initialValue = searchParams.get("layer");
 
@@ -120,6 +123,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({child
         return (
             <LayerContextComp.Provider
                 value={{
+                    searchClient,
                     selectedLayer,
                     setSelectedLayer: onSelectedLayerChange,
                     allLayers,
