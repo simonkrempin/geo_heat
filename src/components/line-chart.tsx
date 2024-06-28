@@ -132,38 +132,38 @@ export default function LineChart() {
 					>
 						<tr>
 							<th></th>
-							<th>Year</th>
-							<th>Value</th>
+							<th className={styles.field}>Year</th>
+							<th className={styles.field}>Value</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td className="field">Max</td>
-							<td>{maxYear?.year}</td>
-							<td>{maxYear?.value.toFixed(2)}</td>
+							<td>Max</td>
+							<td className={styles.field}>{maxYear?.year}</td>
+							<td className={styles.field}>{maxYear?.value.toFixed(2)}</td>
 						</tr>
 						<tr>
 							<td>Min</td>
-							<td>{minYear?.year}</td>
-							<td>{minYear?.value.toFixed(2)}</td>
+							<td className={styles.field}>{minYear?.year}</td>
+							<td className={styles.field}>{minYear?.value.toFixed(2)}</td>
 						</tr>
 						<tr>
 							<td>Average</td>
-							<td></td>
-							<td>{average.toFixed(2)}</td>
+							<td className={styles.field}></td>
+							<td className={styles.field}>{average.toFixed(2)}</td>
 						</tr>
 						<tr>
 							<td>Difference between <br /> last and first value</td>
-							<td>{span}</td>
-							<td>{differenceLastFirst.toFixed(2)}</td>
+							<td className={styles.field}>{span}</td>
+							<td className={styles.field}>{differenceLastFirst.toFixed(2)}</td>
 						</tr>
 						<tr>
 							<td>Biggest difference</td>
-							<td>{maxYear?.year + " - " + minYear?.year}</td>
-							<td>{biggestDifference.toFixed(2)}</td>
+							<td className={styles.field}>{maxYear?.year + " - " + minYear?.year}</td>
+							<td className={styles.field}>{biggestDifference.toFixed(2)}</td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
+			</div>	
 		</div>);
 }
