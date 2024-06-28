@@ -6,7 +6,7 @@ export const openWorldBankJsonParser = (dataInformation: DataInformation, indica
     let minValue: number = Number.MAX_VALUE;
     let colorGradient = tinygradient(['rgb(255, 255, 255)', 'rgb(255, 155, 0)']);
     let metadata: TimeLayerMetadata = {
-        unit: "€",
+        unit: "",
         details: indicatorInformation.name,
         timeMin: Number.MAX_VALUE,
         timeMax: 0,

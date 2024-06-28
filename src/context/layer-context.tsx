@@ -29,7 +29,7 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({child
         const searchParams = useSearchParams();
         const initialValue = searchParams.get("layer");
 
-        const [selectedLayer, setSelectedLayer] = React.useState<string | null>(initialValue);
+        const [selectedLayer, setSelectedLayer] = React.useState<string | null>(null);
         const [selectedYear, setSelectedYear] = React.useState<number | undefined>(undefined);
         const [layerInformation, setLayerInformation] = useState<LayerInformation | TimeLayerInformation | undefined>(undefined);
         const [clickedCountry, setClickedCountry] = useState<string | undefined>(undefined);
@@ -41,6 +41,10 @@ export const LayerContextProvider: React.FC<LayerContextProviderProps> = ({child
             indicatorFetcher().then((data) => {
                 if (data) {
                     setIndicators(data?.IndicatorInformation);
+                }
+
+                if (initialValue) {
+                    onSelectedLayerChange(initialValue);
                 }
             });
         }, []);
