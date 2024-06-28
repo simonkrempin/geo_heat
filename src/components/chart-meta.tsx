@@ -132,12 +132,12 @@ export default function ChartMeta() {
                         <tr>
                             <td>Difference between last and first value</td>
                             <td>{span}</td>
-                            <td>{biggestDifference.toFixed(2)}</td>
+                            <td>{differenceLastFirst.toFixed(2)}</td>
                         </tr>
                         <tr>
                             <td>Biggest difference</td>
-                            <td></td>
-                            <td>{differenceLastFirst.toFixed(2)}</td>
+                            <td>{maxYear?.year +" - "+ minYear?.year}</td>
+                            <td>{biggestDifference.toFixed(2)}</td>
                         </tr>
                     </tbody>
                 </table>
