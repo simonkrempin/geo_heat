@@ -37,7 +37,7 @@ export default function Home() {
 				<Suspense fallback={<LoadingBuffer />}>
 					<InstantSearch searchClient={searchClient}
 								   indexName={"Indicators"}>
-						<LayerContextProvider>
+						<LayerContextProvider searchClient={searchClient}>
 							<Pointer />
 							<LayerSelection>
 								<DataGrid />
